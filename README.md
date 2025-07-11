@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ai-course-generator
 
-## Getting Started
+This is a full-stack web application that generates a complete course — including topic-wise notes, quizzes, and relevant YouTube video links — from a single user prompt.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Generate structured notes from any topic using AI
+- Create multiple-choice quizzes with explanations
+- Include embedded YouTube videos for each subtopic
+- Download notes and quizzes as separate PDF files
+- (Planned) User login system to save and revisit generated courses
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Why this project exists
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The goal is to make learning easier and faster by using AI to convert a simple prompt into a full course.  
+This also serves as a real-world project to demonstrate full-stack development skills, API integration, and user experience design.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech Stack
 
-## Learn More
+- **Frontend:** Next.js (App Router), TypeScript, Tailwind CSS
+- **Backend:** Next.js API Routes
+- **Other Tools:** Redis (rate limiting), MongoDB (user accounts), PDF generation
 
-To learn more about Next.js, take a look at the following resources:
+## Application Routes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Path          | Purpose                                |
+|---------------|----------------------------------------|
+| `/`           | Landing page with project overview     |
+| `/generate`   | Main page to enter prompt and view output |
+| `/quiz`       | Take and review quiz (with answers)    |
+| `/login`      | (Planned) User authentication          |
+>>>>>>> acbac37ea87bde852555713702c594b63d99af55
