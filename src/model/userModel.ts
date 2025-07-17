@@ -15,8 +15,6 @@ export interface User extends Document {
     subscription:Subscription;
     savedCourses:mongoose.Types.ObjectId[];
     isVerified:boolean;
-    otp?:string;
-    otpExpiry?:Date;
 }
 
 const subscriptionSchema=new Schema<Subscription>({
@@ -72,12 +70,7 @@ const userSchema=new Schema<User>({
         type:Boolean,
         default:false,
     },
-    otp:{
-        type:String
-    },
-    otpExpiry:{
-        type:Date
-    },
+
     },
     {timestamps:true},
 );

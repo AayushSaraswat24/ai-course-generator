@@ -3,6 +3,7 @@ import { registerSchema } from "@/schemas/registerSchema";
 import UserModel from "@/model/userModel";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/utils/mailSenders";
+import { redis } from "@/lib/redis";
 
 export async function POST(request:Request){
     try{
@@ -27,7 +28,6 @@ export async function POST(request:Request){
          }
 
          const hashedPassword=await bcrypt.hash(password,10);
-         const otpExpiry=new Date(Date.now()+1000*60*15);
 
          const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -44,13 +44,13 @@ export async function POST(request:Request){
             );
           }
 
+          await redis.set('otp:${email',otp,{ex: 60 * 15}); 
+
          const newUser=await UserModel.create({
             userName,
             email:email.toLowerCase().trim(),
             password: hashedPassword,
             isVerified: false,
-            otp,
-            otpExpiry,
          })
 
          return NextResponse.json({
