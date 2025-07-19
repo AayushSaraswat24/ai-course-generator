@@ -4,6 +4,7 @@ import UserModel from "@/model/userModel";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/utils/mailSenders";
 import { redis } from "@/lib/redis";
+import { dbConnect } from "@/lib/mongodb";
 
 export async function POST(request:Request){
     try{
@@ -16,7 +17,7 @@ export async function POST(request:Request){
                 message: result.error.issues.map(issue => issue.message).join(', '),
             }, { status: 400 });
         }
-
+        await dbConnect();
          const { email, password,userName } = result.data;
 
          const existingUser=await UserModel.findOne({email});
@@ -44,7 +45,7 @@ export async function POST(request:Request){
             );
           }
 
-          await redis.set('otp:${email',otp,{ex: 60 * 15}); 
+          await redis.set('otp:${email',otp,{ex: 60 * 5}); 
 
          const newUser=await UserModel.create({
             userName,

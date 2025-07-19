@@ -8,6 +8,7 @@ export interface Subscription{
 } 
 
 export interface User extends Document {
+    _id: mongoose.Types.ObjectId;
     email:string;
     password:string;
     userName:string;

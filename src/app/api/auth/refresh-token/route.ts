@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
         return response;
 
     }catch(error:any){
-       console.error("Error storing refresh token:", error);
+       console.log("Error storing refresh token:", error);
        return NextResponse.json({
            success: false,
            message: "Internal server error ",

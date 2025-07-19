@@ -33,7 +33,7 @@ export default function ForgotPassword({
       <p>If the button doesn't work, copy and paste this link into your browser:</p>
       <p style="word-break: break-word;">${resetUrl}</p>
 
-      <p>This code will expire in 15 minutes.</p>
+      <p>This code will expire in 5 minutes.</p>
     </div>
   `;
 }
