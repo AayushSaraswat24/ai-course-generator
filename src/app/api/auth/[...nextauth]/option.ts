@@ -35,6 +35,9 @@ export const authOptions :NextAuthOptions= {
                 if(!user) {
                     throw new Error("User not found.");
                 }
+                if(!user.isVerified){
+                    throw new Error("Please verify your email before logging in.");
+                }
                 if(!user.password) {
                     throw new Error("Please login with Google.");
                 }
