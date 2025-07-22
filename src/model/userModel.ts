@@ -12,7 +12,6 @@ export interface User extends Document {
     email:string;
     password:string;
     userName:string;
-    createdAt:Date;
     subscription:Subscription;
     savedCourses:mongoose.Types.ObjectId[];
     isVerified:boolean;
@@ -57,10 +56,6 @@ const userSchema=new Schema<User>({
         required:true,
         minlength:3,
         maxlength:20
-    },
-    createdAt:{
-        type:Date,
-        default:Date.now,
     },
     subscription:{type:subscriptionSchema, default:()=>({})},
     savedCourses:[{
