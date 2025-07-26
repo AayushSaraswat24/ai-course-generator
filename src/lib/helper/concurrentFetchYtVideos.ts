@@ -38,6 +38,8 @@ export async function concurrentFetchYoutubeVideos(subTopics:SubtopicWithKeyword
 
                 if(video){
                     await redis.set(cacheKey,JSON.stringify(video),{ex:60*60*48})
+                }else{
+                    throw "yt helper is not working . may be limit is over"
                 }
 
                 return{
@@ -46,7 +48,7 @@ export async function concurrentFetchYoutubeVideos(subTopics:SubtopicWithKeyword
                 }
             }catch(error:any){
                 // to handle redis error .
-                console.log(`Error in concurrent fetch yt video ${error}`);
+                console.log("Error in concurrent fetch yt video ",error);
                 return {
                     title:item.title,
                     video:null 

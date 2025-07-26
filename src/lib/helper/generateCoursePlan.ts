@@ -3,7 +3,7 @@ import { genAI } from "@/lib/helper/gemini"; // your Gemini instance
 export async function generateCoursePlan(rawTopic: string, userKnowledge: string,includeVideos:boolean){
 
   const prompt = `
-    your task is to return a response based on the user prompt . check if prompt is appropriate and if not why .ex: "violence", "drugs", "sexual content", "hate speech",etc.extract the main topic,return the main sub-topic in array of object with keyword if specified to search educational video on youtube api.based on user knowledge .here is an example of user prompt "want to learn react js,level :moderate".your response example: 
+    your task is to return a response based on the user prompt . check if prompt is appropriate and if not why .ex: "violence", "drugs", "sexual content", "hate speech",etc.extract the main topic,return the main & sub-topic in array of object with keyword if specified to search educational video on youtube api.based on user knowledge .here is an example of user prompt "want to learn react js,level :moderate".your response example: 
 
     {
     "prompt": {

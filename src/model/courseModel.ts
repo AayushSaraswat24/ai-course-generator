@@ -1,7 +1,5 @@
 import mongoose,{Schema,Document} from "mongoose";
 
-
-
 export interface Course extends Document {
     title:string;
     notes:string;
@@ -10,8 +8,6 @@ export interface Course extends Document {
     createdBy:mongoose.Types.ObjectId;
     createdAt: Date;
 }
-
-
 
 const courseSchema = new Schema<Course>(
   {

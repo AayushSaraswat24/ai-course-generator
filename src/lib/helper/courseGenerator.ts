@@ -50,7 +50,7 @@ Guidelines:
   
   return stream;
 } catch (error) {
-  console.error("Error generating course notes:", error);
+  console.error("Error generating course notes:", JSON.stringify(error));
   
 }
 

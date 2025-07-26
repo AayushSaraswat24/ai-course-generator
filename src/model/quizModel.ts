@@ -1,6 +1,6 @@
 import mongoose,{Schema,Document} from "mongoose";
 
-interface QuizQuestion {
+interface QuizQuestion extends Document {
   question: string;
   options:string[];
   correctAnswer:string;
