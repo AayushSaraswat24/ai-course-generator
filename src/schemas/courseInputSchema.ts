@@ -1,7 +1,7 @@
 import {z} from "zod";
 
 export const courseInputSchema=z.object({
-    userPrompt:z
+    prompt:z
     .string()
     .min(5,"prompt is too short.")
     .max(300,"prompt is too long."),
@@ -12,6 +12,6 @@ export const courseInputSchema=z.object({
       message: "Invalid knowledge level.",
     }),
 
-     includeVideos:z.boolean().optional(),
+    includeVideos:z.boolean().default(false),
 });
 

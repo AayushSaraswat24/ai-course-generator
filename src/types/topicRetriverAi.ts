@@ -6,9 +6,8 @@ type Subtopic = {
 export type AiResponse = {
   prompt: {
     inappropriate: string; // "false" as string, not boolean
-    contain: string;
+    cause: string;
   };
   mainTopic: string;
-  isVast: boolean;
   subtopics: Subtopic[];
 };

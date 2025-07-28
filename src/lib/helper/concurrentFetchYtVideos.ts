@@ -27,10 +27,23 @@ export async function concurrentFetchYoutubeVideos(subTopics:SubtopicWithKeyword
             try{
                 const cached=await redis.get(cacheKey);
                 if(cached){
-                    const video:VideoObject=JSON.parse(cached as string);
-                    return {
-                        title:item.title,
-                        video
+                    try {
+                        if (typeof cached === "string") {
+
+                        const video: VideoObject = JSON.parse(cached);
+                        return { title: item.title, video };
+                        } else if (typeof cached === "object") {
+
+                        console.log(`Redis returned a parsed object for ${cacheKey}:`, cached);
+                        return { title: item.title, video: cached as VideoObject };
+                        } else {
+
+                        console.log(`Unexpected Redis value type for ${cacheKey}:`, typeof cached);
+                        await redis.del(cacheKey); 
+                        }
+                    } catch (err) {
+                        console.log(`JSON.parse failed for ${cacheKey}:`, cached);
+                        await redis.del(cacheKey); // corrupted value
                     }
                 }
 

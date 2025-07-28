@@ -4,6 +4,7 @@ import { generateCoursePlan } from "@/lib/helper/generateCoursePlan";
 import { redis } from "@/lib/redis";
 import { verifyAccessToken } from "@/lib/verifyAccessToken";
 import UserModel from "@/model/userModel";
+import { courseInputSchema } from "@/schemas/courseInputSchema";
 import { AiResponse } from "@/types/topicRetriverAi";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,7 +17,18 @@ export async function POST(request:NextRequest){
         //       message: "unauthorized"
         //     }, { status: 401 });
         // }
-        const {prompt,userKnowledge,includeVideos}=await request.json();
+        const body=await request.json();
+        const parsed=courseInputSchema.safeParse(body);
+        if (!parsed.success) {
+          const firstError = parsed.error.issues?.[0]?.message || "Invalid input";
+
+          return NextResponse.json({
+            success: false,
+            message: firstError,
+          }, { status: 400 });
+        }
+
+        const {prompt,userKnowledge,includeVideos}=parsed.data;
 
         // const user= await UserModel.findOne({_id:payload.id});
         // if(!user){
@@ -25,6 +37,25 @@ export async function POST(request:NextRequest){
         //       message: "user not found re-loggin"
         //     }, { status: 404 });
         // }
+
+        // const now = new Date();
+        // const sub = user.subscription;
+
+        // if (
+        //   (sub.plan !== 'free') &&
+        //   sub.expiredAt &&
+        //   now > new Date(sub.expiredAt)
+        // ) {
+
+        //   user.subscription.plan = 'free';
+        //   await user.save();
+
+        //   return NextResponse.json({
+        //     success: false,
+        //     message: "Your subscription has expired. Please renew to continue using pro features.",
+        //   }, { status: 403 });
+        // }
+
 
         // const redisKey=`limit:${user._id}`;
         // const requestLimit=await redis.incr(redisKey);
@@ -53,18 +84,23 @@ export async function POST(request:NextRequest){
         if(topics.prompt.inappropriate=='true'){
             return NextResponse.json({
               success: false,
-              message: `The prompt you provided violates our content guidelines. it contain ${topics.prompt.contain}`,
+              message: `The prompt you provided violates our content guidelines. it contain ${topics.prompt.cause}`,
             }, { status: 400 });
         }
-        const ytVideos=includeVideos ? await concurrentFetchYoutubeVideos(topics.subtopics) : null;
+        const ytVideosPromise=includeVideos ? concurrentFetchYoutubeVideos(topics.subtopics) : Promise.resolve(null);
        
         // integrate courseGenerator and return the stream and then check .
         const subTopics = JSON.stringify([
         topics.mainTopic,
-        ...topics.subtopics.map((item) => item.keyword),
+        ...topics.subtopics.map((item) => item.title),
         ]);
         const encoder = new TextEncoder();
-        const notesStream=await courseGenerator(topics.mainTopic,subTopics,userKnowledge)
+        const notesStreamPromise=courseGenerator(topics.mainTopic,subTopics,userKnowledge)
+
+        const [ytVideos,notesStream]=await Promise.all([
+          ytVideosPromise,
+          notesStreamPromise
+        ])
 
         if(!notesStream){
           return NextResponse.json({
@@ -79,7 +115,6 @@ export async function POST(request:NextRequest){
             controller.enqueue(
               encoder.encode(JSON.stringify({ type: "metadata", ytVideos }) + "\n")
             );
-
 
             const reader = notesStream.getReader();
             while (true) {

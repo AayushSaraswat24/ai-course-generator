@@ -1,6 +1,9 @@
 import axios from "axios";
 
 export async function fetchYoutubeVideo(query:string){
+     const start = Date.now();
+    console.log(`⏱️ [${new Date().toISOString()}] Starting YT API call for "${query}"`);
+
     if(!query){
         console.log(`No query provided for YouTube search.`);
         return null;
@@ -26,7 +29,8 @@ export async function fetchYoutubeVideo(query:string){
             },
         });
         const item=data.items[0];
-        
+        const end = Date.now();
+         console.log(`✅ [${new Date().toISOString()}] Completed YT API for "${query}" in ${end - start}ms`);
         if(!item){
             console.log(`No video found for query: ${query}`);
             return null;
