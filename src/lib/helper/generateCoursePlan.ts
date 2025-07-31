@@ -30,7 +30,7 @@ Your entire response must be the JSON itself, with no markdown, comments, or exp
   
    if (!result || !result.text) {
   throw new Error("AI did not return any content.");
-}
+  }
 
 let raw = result.text.trim();
 

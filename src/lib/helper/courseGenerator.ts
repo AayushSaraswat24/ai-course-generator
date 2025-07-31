@@ -42,6 +42,7 @@ Guidelines:
   const stream = new ReadableStream({
     async start(controller) {
       for await (const chunk of result) {
+         console.log("course generator output chunk:", JSON.stringify(chunk.text));
         controller.enqueue(encoder.encode(chunk.text));
       }
       controller.close();
@@ -51,9 +52,8 @@ Guidelines:
   return stream;
 } catch (error) {
   console.error("Error generating course notes:", JSON.stringify(error));
-  
+ throw new Error("Failed to generate notes . Internal Ai Error , try again later ") 
 }
 
 }
 
-// testing prompt.
