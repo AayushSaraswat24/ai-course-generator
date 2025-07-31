@@ -26,12 +26,12 @@ export async function POST(request: NextRequest) {
 
         await redis.del(redisKey);
 
-        const {id,email}=JSON.parse(tokenData);
+        const {id,email,plan}=JSON.parse(tokenData);
 
-        const accessToken=generateAccessToken({ id, email });
+        const accessToken=generateAccessToken({ id, email,plan });
         const newRefreshToken=uuidv4();
 
-        await redis.set(`refreshToken:${newRefreshToken}`, JSON.stringify({ id, email }),{ex:60*60*24*7}); 
+        await redis.set(`refreshToken:${newRefreshToken}`, JSON.stringify({ id, email, plan }),{ex:60*60*24*7}); 
 
         const response= NextResponse.json({
             success: true, 

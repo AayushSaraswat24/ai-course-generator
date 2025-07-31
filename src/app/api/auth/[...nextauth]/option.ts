@@ -54,6 +54,7 @@ export const authOptions :NextAuthOptions= {
                     id: user._id.toString(),
                     email: user.email,
                     userName: user.userName,
+                    plan:user.subscription.plan,
                 };
             }
         })
@@ -80,8 +81,10 @@ export const authOptions :NextAuthOptions= {
                     });
                     
                     user.id=newUser._id.toString();
+                    user.plan=newUser.subscription.plan;
                 }else{
                     user.id=existingUser._id.toString();
+                    user.plan=existingUser.subscription.plan;
                 }
                 user.userName=user.email.split('@')[0];
             }
@@ -91,17 +94,18 @@ export const authOptions :NextAuthOptions= {
         async jwt({token,user,account}){
             
             if(user && account){
-                const accessToken=generateAccessToken({id:user.id,email:user.email});
+                const accessToken=generateAccessToken({id:user.id,email:user.email,plan:user.plan});
 
                 const refreshToken=uuid();
                 const redisKey=`refreshToken:${refreshToken}`;
-                await redis.set(redisKey,JSON.stringify({id:user.id,email:user.email}),{ex:60*60*24*7});
+                await redis.set(redisKey,JSON.stringify({id:user.id,email:user.email,plan:user.plan}),{ex:60*60*24*7});
 
                 return {
                     ...token ,
                     id:user.id,
                     email:user.email,
                     userName:user.userName,
+                    plan:user.plan,
                     accessToken,
                     refreshToken
                 }
@@ -114,7 +118,8 @@ export const authOptions :NextAuthOptions= {
                 session.user={
                     id:token.id,
                     email:token.email,
-                    userName:token.userName
+                    userName:token.userName,
+                    plan:token.plan
                 }
             }
             return session;
