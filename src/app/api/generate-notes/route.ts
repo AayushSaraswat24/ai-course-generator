@@ -6,17 +6,18 @@ import { verifyAccessToken } from "@/lib/verifyAccessToken";
 import UserModel from "@/model/userModel";
 import { courseInputSchema } from "@/schemas/courseInputSchema";
 import { AiResponse } from "@/types/topicRetriverAi";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request:NextRequest){
     try{
-        // const payload=verifyAccessToken(request);
-        // if(!payload){
-        //     return NextResponse.json({
-        //       success: false,
-        //       message: "unauthorized"
-        //     }, { status: 401 });
-        // }
+        const payload=verifyAccessToken(request);
+        if(!payload){
+            return NextResponse.json({
+              success: false,
+              message: "Session Expired"
+            }, { status: 401 });
+        }
         const body=await request.json();
         const parsed=courseInputSchema.safeParse(body);
         if (!parsed.success) {
@@ -30,47 +31,55 @@ export async function POST(request:NextRequest){
 
         const {prompt,userKnowledge,includeVideos}=parsed.data;
 
-        // const user= await UserModel.findOne({_id:payload.id});
-        // if(!user){
-        //     return NextResponse.json({
-        //       success: false,
-        //       message: "user not found re-loggin"
-        //     }, { status: 404 });
-        // }
+        if(!mongoose.Types.ObjectId.isValid(payload.id)){
+          return NextResponse.json({
+            success: false,
+            message: "Invalid id in token login again "
+          }, { status: 400 });
+        }
 
-        // const now = new Date();
-        // const sub = user.subscription;
+        const userId=new mongoose.Types.ObjectId(payload.id);
+        const user= await UserModel.findOne({_id:userId});
+        if(!user){
+            return NextResponse.json({
+              success: false,
+              message: "user not found re-loggin"
+            }, { status: 404 });
+        }
 
-        // if (
-        //   (sub.plan !== 'free') &&
-        //   sub.expiredAt &&
-        //   now > new Date(sub.expiredAt)
-        // ) {
+        const now = new Date();
+        const sub = user.subscription;
+        const currPlan=sub.plan;
+        if (
+          (sub.plan !== 'free') &&
+          sub.expiredAt &&
+          now > new Date(sub.expiredAt)
+        ) {
 
-        //   user.subscription.plan = 'free';
-        //   await user.save();
+          user.subscription.plan = 'free';
+          await user.save();
 
-        //   return NextResponse.json({
-        //     success: false,
-        //     message: "Your subscription has expired. Please renew to continue using pro features.",
-        //   }, { status: 403 });
-        // }
+          return NextResponse.json({
+            success: false,
+            message: `Your subscription has expired. Please renew to continue using ${currPlan} features.`,
+          }, { status: 403 });
+        }
 
 
-        // const redisKey=`limit:${user._id}`;
-        // const requestLimit=await redis.incr(redisKey);
-        // if(requestLimit===1){
-        //     await redis.expire(redisKey,60*60*24*7);
-        // }
+        const redisKey=`notes:${user._id}`;
+        const requestLimit=await redis.incr(redisKey);
+        if(requestLimit===1){
+            await redis.expire(redisKey,60*60*24*7);
+        }
         
-        // if((user.subscription.plan=='free' && requestLimit>4) || (user.subscription.plan=='pro' && requestLimit>20) ){
-        //     const ttl=await redis.ttl(redisKey);
-        //      return NextResponse.json({
-        //        success: false,
-        //        message: "request quota reach .",
-        //        retryAfter:`${((ttl/60)/60)/24}`
-        //      }, { status: 429 });
-        // }
+        if((user.subscription.plan=='free' && requestLimit>4) || (user.subscription.plan=='pro' && requestLimit>20) ){
+            const ttl=await redis.ttl(redisKey);
+            const hoursLeft = Math.ceil(ttl / 3600);
+             return NextResponse.json({
+               success: false,
+               message: `Request quota reached. Try again in ${hoursLeft} hour(s).`,
+             }, { status: 429 });
+        }
 
         const jsonResponse=await generateCoursePlan(prompt,userKnowledge,includeVideos);
         if(!jsonResponse){

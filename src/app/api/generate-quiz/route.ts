@@ -3,6 +3,7 @@ import { redis } from "@/lib/redis";
 import { verifyAccessToken } from "@/lib/verifyAccessToken";
 import UserModel from "@/model/userModel";
 import { quizSchema } from "@/schemas/quizInputSchema";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request:NextRequest){
@@ -28,7 +29,15 @@ export async function POST(request:NextRequest){
 
         const {prompt,userKnowledge}=parsed.data;
 
-        const user=await UserModel.findOne({_id:payload.id});
+        if(!mongoose.Types.ObjectId.isValid(payload.id)){
+          return NextResponse.json({
+            success: false,
+            message: "Invalid id in token login again "
+          }, { status: 400 });
+        }
+
+        const userId=new mongoose.Types.ObjectId(payload.id);
+        const user= await UserModel.findOne({_id:userId});
         if(!user){
             return NextResponse.json({
               success: false,
@@ -55,7 +64,7 @@ export async function POST(request:NextRequest){
         }
 
         // suspected code in case of error .
-        const redisKey=`limit:${user._id}`;
+        const redisKey=`quiz:${user._id}`;
         const quota=await redis.get<number | null>(redisKey);
         const requestLimit=quota ? quota : 1;
        

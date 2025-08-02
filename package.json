@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@google/genai": "^1.11.0",
@@ -20,6 +21,9 @@
     "next-auth": "^4.24.11",
     "nodemailer": "^6.10.1",
     "p-limit": "^6.2.0",
+    "patch-package": "^8.0.0",
+    "pdf-parse": "^1.1.1",
+    "postinstall-postinstall": "^2.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-email": "^4.1.3",
@@ -34,6 +38,7 @@
     "@types/mongoose": "^5.11.96",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.17",
+    "@types/pdf-parse": "^1.1.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
