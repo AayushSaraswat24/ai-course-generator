@@ -3,25 +3,30 @@ import { redis } from "@/lib/redis";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from 'uuid';
 
-
 export async function POST(request: NextRequest) {
     try{
         const refreshToken =request.cookies.get("refreshToken")?.value;
         if (!refreshToken) {
-            return NextResponse.json({
+            const res= NextResponse.json({
                 success: false,
                 message: "Refresh token not found",
             }, { status: 401 });
+            res.cookies.set('accessToken', '', { maxAge: 0, path: '/' });
+            res.cookies.set('refreshToken', '', { maxAge: 0, path: '/' });
+            return res;
         }
 
         const redisKey=`refreshToken:${refreshToken}`;
         const tokenData=await redis.get(redisKey) as string | null;
 
         if(!tokenData) {
-            return NextResponse.json({
+            const res= NextResponse.json({
                 success: false,
                 message: "Invalid or expired token",
             }, { status: 401 });
+            res.cookies.set('accessToken', '', { maxAge: 0, path: '/' });
+            res.cookies.set('refreshToken', '', { maxAge: 0, path: '/' });
+            return res;
         }
 
         await redis.del(redisKey);
@@ -57,9 +62,17 @@ export async function POST(request: NextRequest) {
 
     }catch(error:any){
        console.log("Error storing refresh token:", error);
-       return NextResponse.json({
-           success: false,
-           message: "Internal server error ",
-       }, { status: 500 });
+
+    const res = NextResponse.json({
+      success: false,
+      message: "Internal server error",
+    }, { status: 401 });
+
+    // Clear both cookies just in case
+    res.cookies.set('accessToken', '', { maxAge: 0, path: '/' });
+    res.cookies.set('refreshToken', '', { maxAge: 0, path: '/' });
+
+    return res;
+
     }
 }

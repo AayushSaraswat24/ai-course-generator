@@ -12,7 +12,7 @@ export async function POST(request:NextRequest){
         if(!payload){
             return NextResponse.json({
               success: false,
-              message: "login again"
+              message: "Session Expired"
             }, { status: 401 });
         }
 
