@@ -112,5 +112,4 @@ export async function POST(request:NextRequest){
         }, { status: 500 });
     }
 }
-
-// tommorow task -- pdf summarizer and centralized fetch function . small suggestion add how many generation left too and what if we got an ai error then user limit is used but he didn't get the result . 
+ 

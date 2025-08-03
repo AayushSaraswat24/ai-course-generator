@@ -14,6 +14,7 @@ export interface User extends Document {
     userName:string;
     subscription:Subscription;
     savedCourses:mongoose.Types.ObjectId[];
+    savedQuizzes: mongoose.Types.ObjectId[];
     isVerified:boolean;
 }
 
@@ -61,6 +62,10 @@ const userSchema=new Schema<User>({
     savedCourses:[{
         type:mongoose.Types.ObjectId,
         ref:'Course',
+    }],
+    savedQuizzes: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Quiz',
     }],
     isVerified:{
         type:Boolean,

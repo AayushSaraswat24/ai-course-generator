@@ -1,8 +1,8 @@
 import mongoose,{Schema,Document} from "mongoose";
 
 export interface Course extends Document {
-    title:string;
-    notes:string;
+    title:string[];
+    notes:string[];
     videoLinks?:string[];
   
     createdBy:mongoose.Types.ObjectId;
@@ -11,9 +11,9 @@ export interface Course extends Document {
 
 const courseSchema = new Schema<Course>(
   {
-    title: { type: String, required: true },
-    notes: { type: String, required: true },
-    videoLinks: [{ type: String }],
+    title: { type: [String], required: true, default: [] },
+    notes: { type: [String], required: true, default: [] },
+    videoLinks: { type: [String], default: [] },
     createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },
   { timestamps: true }

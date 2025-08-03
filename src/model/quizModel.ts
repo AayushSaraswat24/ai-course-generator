@@ -1,20 +1,37 @@
-import mongoose,{Schema,Document} from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-interface QuizQuestion extends Document {
+interface Question {
   question: string;
-  options:string[];
-  correctAnswer:string;
-  explanation?: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
 }
 
-const quizSchema = new Schema<QuizQuestion>(
+export interface Quiz extends Document {
+  questions: Question[];
+  createdBy: mongoose.Types.ObjectId;
+  createdAt: Date;
+}
+
+const questionSchema = new Schema<Question>(
   {
     question: { type: String, required: true },
-    options: [{ type: String, required: true }],
-    correctAnswer: { type: String, required: true },
-    explanation: String,
-  }
+    options: { type: [String], required: true },
+    correctAnswer: { type: Number, required: true },
+    explanation: { type: String, required: true },
+  },
+  { _id: false }
 );
 
-const quizModel = mongoose.models.quiz as mongoose.Model<QuizQuestion> || mongoose.model<QuizQuestion>("quiz", quizSchema);
-export default quizModel;
+const quizSchema = new Schema<Quiz>(
+  {
+    questions: { type: [questionSchema], required: true },
+    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  },
+  { timestamps: true }
+);
+
+const QuizModel =
+  mongoose.models.Quiz as mongoose.Model<Quiz> || mongoose.model<Quiz>("Quiz", quizSchema);
+
+export default QuizModel;
