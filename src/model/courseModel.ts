@@ -4,7 +4,6 @@ export interface Course extends Document {
     title:string[];
     notes:string[];
     videoLinks?:string[];
-  
     createdBy:mongoose.Types.ObjectId;
     createdAt: Date;
 }

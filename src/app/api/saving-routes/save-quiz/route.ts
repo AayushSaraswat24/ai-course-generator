@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
     }
 
-    // Enforce quiz quota (same as notes)
     const savedCount = await QuizModel.countDocuments({ createdBy: user._id });
     const limit =
       user.subscription.plan === "free" ? 5 :
