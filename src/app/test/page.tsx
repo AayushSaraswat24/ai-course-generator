@@ -20,7 +20,7 @@ export default function StreamNotesClient() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/generate-notes", {
+      const res = await fetch("/api/generation-routes/generate-notes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt, userKnowledge, includeVideos }),
