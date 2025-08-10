@@ -35,9 +35,6 @@ export const authOptions :NextAuthOptions= {
                 if(!user) {
                     throw new Error("User not found.");
                 }
-                if(!user.isVerified){
-                    throw new Error("Please verify your email before logging in.");
-                }
                 if(!user.password) {
                     throw new Error("Please login with Google.");
                 }
@@ -47,7 +44,7 @@ export const authOptions :NextAuthOptions= {
                 }
 
                 if(!user.isVerified) {
-                    throw new Error("Please verify your email before logging in.");
+                    throw new Error("Please verify your email before login.");
                 }
 
                 return {
@@ -142,5 +139,3 @@ export const authOptions :NextAuthOptions= {
 }
 
 // jwt callback token is handled internally by next-auth while session token is sent to the client cookies so we just take the non-sensitive info from token and store in session token .  also at each callback we are only repeating the neccessary process on intial sign-in that include sign-in done intentionally not triggered by any other event . to sign-in only when we want we use if condition like user && account or if token etc . 
-
-// tommorow need to test this first after that create a route to setUp token that it will retrive from getToekn function that return jwt callback token with accessTOkena and refreshToken .

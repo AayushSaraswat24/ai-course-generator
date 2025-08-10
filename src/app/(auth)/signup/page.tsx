@@ -121,11 +121,13 @@ export default function register() {
                                                 <Eye
                                                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300 cursor-pointer"
                                                 onClick={() => setShowPassword(false)}
+                                                onMouseDown={e => e.preventDefault()}
                                                 />
                                             ) : (
                                                 <EyeOff
                                                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300 cursor-pointer"
                                                 onClick={() => setShowPassword(true)}
+                                                onMouseDown={e => e.preventDefault()}
                                                 />
                                             )}
                                         </div>
