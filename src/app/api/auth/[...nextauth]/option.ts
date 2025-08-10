@@ -73,6 +73,11 @@ export const authOptions :NextAuthOptions= {
                 if (!user.email) throw new Error("Google account didn't return email")
                 await dbConnect();
                 const existingUser = await UserModel.findOne({ email: user.email });
+
+                if (existingUser?.password) {
+                throw new Error("You've already signed up using email/password. Please login using that method.");
+                 }
+                 
                 if (!existingUser) {
                     const newUser = await UserModel.create({
                         email: user.email,
@@ -128,7 +133,7 @@ export const authOptions :NextAuthOptions= {
     },
     pages:{
         signIn:'/sign-in',
-        error:'/sign-in'
+        error:'/error'
     },
     jwt:{
         maxAge:60*60,

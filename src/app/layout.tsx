@@ -28,10 +28,27 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {          /* This script removes the delay in loading the selected theme and eliminate flicker. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const body = document.documentElement;
+
+                if (theme === 'dark' || (theme === 'system' && prefersDark)) {
+                  body.setAttribute('data-theme', 'dark');
+                } else if (theme === 'light' || (theme === 'system' && !prefersDark)) {
+                  body.setAttribute('data-theme', 'light');
+                }
+              })();
+            `,
+          }}
+        />
         <Providers>
-        {children}
+          {children}
         </Providers>
-        
       </body>
     </html>
   );

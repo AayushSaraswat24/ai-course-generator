@@ -10,7 +10,7 @@ export interface Subscription{
 export interface User extends Document {
     _id: mongoose.Types.ObjectId;
     email:string;
-    password:string;
+    password?:string;
     userName:string;
     subscription:Subscription;
     savedCourses:mongoose.Types.ObjectId[];
@@ -50,7 +50,6 @@ const userSchema=new Schema<User>({
     },
     password:{
         type:String,
-        required:true,
     },
     userName:{
         type:String,
