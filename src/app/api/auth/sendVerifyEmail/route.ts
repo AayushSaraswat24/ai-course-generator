@@ -1,3 +1,4 @@
+import { dbConnect } from "@/lib/mongodb";
 import { redis } from "@/lib/redis";
 import UserModel from "@/model/userModel";
 import { sendVerificationEmail } from "@/utils/mailSenders";
@@ -19,6 +20,7 @@ export async function POST(request: Request) {
             }, { status: 400 });
         }
 
+        await dbConnect();
         const email = parsedBody.email.toLowerCase().trim();
         const user = await UserModel.findOne({ email });
         if (!user) {
@@ -41,7 +43,7 @@ export async function POST(request: Request) {
             await redis.expire(redisOtpRateKey, 120);
         }
 
-        if (rate > 5) {
+        if (rate > 4) {
             return NextResponse.json({
                 success: false,
                 message: "Too many requests. Please try again later."

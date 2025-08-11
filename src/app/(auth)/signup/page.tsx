@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { AuthButton } from "@/components/authButton"
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2Icon } from "lucide-react";
 import PublicNavbar from "@/components/PublicNavbar"
 
 
@@ -27,6 +27,7 @@ export default function register() {
     const [successMessage, setSuccessMessage] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
@@ -39,6 +40,7 @@ export default function register() {
 
     async function onSubmit(values: z.infer<typeof registerSchema>) {
         try {
+            setIsLoading(true);
             const response = await axios.post('/api/auth/register', values);
             setErrorMessage("");
             setSuccessMessage(response.data.message);
@@ -46,6 +48,8 @@ export default function register() {
         } catch (error:any) {
             setSuccessMessage("");
             setErrorMessage(error.response?.data?.message);
+        }finally {
+            setIsLoading(false);
         }
     }
 
@@ -136,12 +140,20 @@ export default function register() {
                             )}
                             />
 
-                        <Button
+                        <Button disabled={isLoading}
                             type="submit"
                             className="px-6 py-3 mt-2 text-base rounded-lg cursor-pointer font-bold text-white
                             bg-violet-500
                             hover:bg-violet-600
-                            transition-colors">SignUp</Button>
+                            transition-colors">
+                                {
+                                    isLoading ? (
+                                        <Loader2Icon className="animate-spin" />
+                                    ) : (
+                                        "SignUp"
+                                    )
+                                }
+                                </Button>
                         
                     </form>
                 </Form>

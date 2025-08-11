@@ -52,7 +52,7 @@ export default function VerifyPage() {
      <div className="flex-1 flex justify-center flex-col items-center ">
 
         <div className="mb-8 text-center">
-          <h1 className="sm:text-2xl font-bold text-lg">Email Verification</h1>
+          <h1 className="sm:text-2xl font-bold text-xl">Email Verification</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-300 whitespace-break-spaces ">
             Please enter the 6-digit code sent to your email to verify your account.
           </p>

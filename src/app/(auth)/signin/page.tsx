@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { AuthButton } from "@/components/authButton";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -29,6 +29,7 @@ export default function SignIn() {
     const [formError, setformError] = useState<string | null>(null);
     const router=useRouter();
     const [showPassword, setShowPassword] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
  const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -39,6 +40,8 @@ export default function SignIn() {
   })
 
   const onSubmit=async (values:z.infer<typeof loginSchema>)=>{
+    setformError(null);
+    setIsLoading(true);
     const res=await signIn("credentials", {
       ...values,
       redirect: false
@@ -54,6 +57,7 @@ export default function SignIn() {
             setformError(error.response?.data.message);
         }
     }
+    setIsLoading(false);
   }
 
     return (
@@ -61,12 +65,6 @@ export default function SignIn() {
             <PublicNavbar />
             <div className="flex flex-1 items-center justify-center">
                 <div className="p-8 rounded-lg w-full bg-gray-100 sm:max-w-md m-4 dark:bg-neutral-800">
-
-                {formError && (
-                    <div className="mb-4 text-center  text-red-500">
-                        {formError}
-                    </div>
-                )}
 
                 <div className="mb-6 text-center">
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
@@ -76,6 +74,12 @@ export default function SignIn() {
                         Access your personalized learning tools, manage notes, summarize PDFs, and generate quizzes. Welcome back to Courgen!
                     </p>
                 </div>
+
+                {formError && (
+                    <div className="mb-4 text-center  text-red-500">
+                        {formError}
+                    </div>
+                )}
 
                     <Form {...form}>
 
@@ -132,7 +136,15 @@ export default function SignIn() {
                             className="px-6 py-3 mt-2 text-base rounded-lg cursor-pointer font-bold text-white
                             bg-violet-500
                             hover:bg-violet-600
-                            transition-colors">Login</Button>
+                            transition-colors">
+                                {
+                                    isLoading ? (
+                                        <Loader2Icon className="animate-spin" />
+                                    ) : (
+                                        "Login"
+                                    )
+                                }
+                                </Button>
                         
                     </form>
                 </Form>
@@ -151,7 +163,15 @@ export default function SignIn() {
                     <AuthButton />
 
                 </div>
+
+                <div className="flex flex-col justify-center items-center mt-4">
+                <Link href="/sendVerifyEmail" className="text-blue-500 text-center cursor-pointer hover:underline">
+                    sendVerifyEmail?
+                </Link>
                 </div>
+                
+                </div>
+                
             </div>
         </div>
     );
