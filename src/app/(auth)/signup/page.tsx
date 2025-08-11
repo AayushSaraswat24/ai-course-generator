@@ -43,10 +43,9 @@ export default function register() {
             setErrorMessage("");
             setSuccessMessage(response.data.message);
             form.reset();
-        } catch (error) {
-            console.log(`Error in registration form submission: ${error}`);
+        } catch (error:any) {
             setSuccessMessage("");
-            setErrorMessage("Registration failed. Please try again.");
+            setErrorMessage(error.response?.data?.message);
         }
     }
 
@@ -64,12 +63,12 @@ export default function register() {
                     </p>
                 </div>
                 {successMessage && (
-                    <div className="bg-green-100 text-green-800 p-2 sm:p-4 rounded-md mb-4">
+                    <div className="bg-green-100 text-center text-green-800 p-2 sm:p-4 rounded-md mb-4">
                         {successMessage}
                     </div>
                 )}
                 {errorMessage && (
-                    <div className="bg-red-100 text-red-800 p-2 sm:p-4 rounded-md mb-4">
+                    <div className="bg-red-100 text-center text-red-800 p-2 sm:p-4 rounded-md mb-4">
                         {errorMessage}
                     </div>
                 )}

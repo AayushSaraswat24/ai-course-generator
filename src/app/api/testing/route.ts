@@ -9,3 +9,5 @@ export async function POST(request:Request){
         response:ai
     })
 }
+
+// todo : make the front-end page for verify and make the send verifiyEmail page too and give its link on signIn page . 

@@ -59,12 +59,12 @@ export default function PublicNavbar() {
   };
 
   return (
-    <nav className="flex items-center justify-between px-4 sm:px-6 py-4 bg-white dark:bg-neutral-900 shadow-sm relative">
+    <nav className="flex items-center justify-between px-3 sm:px-6 py-4 bg-white dark:bg-neutral-900 shadow-sm relative">
       <div className="absolute left-6 right-6 top-full h-px bg-gray-300 dark:bg-gray-700" aria-hidden="true" />
 
-      <div className="text-2xl font-bold text-violet-500">
+      <Link href="/" className="sm:text-2xl mr-1 text-lg font-bold text-violet-500 cursor-pointer">
         CourGen
-      </div>
+      </Link>
 
       <div className="flex items-center space-x-2 sm:space-x-4">
 
@@ -72,7 +72,7 @@ export default function PublicNavbar() {
           <button
             onClick={() => setOpen((prev) => !prev)}
             onKeyDown={handleKeyDown}
-            className="px-3 w-22 py-2 text-sm font-medium text-gray-700 bg-white rounded-md shadow-sm dark:bg-gray-800 dark:text-white focus:outline-none flex items-center justify-between"
+            className="px-3 sm:w-22 py-2 text-sm font-medium cursor-pointer text-gray-700 bg-white rounded-md shadow-sm dark:bg-gray-800 dark:text-white focus:outline-none flex items-center justify-between"
             aria-haspopup="listbox"
             aria-expanded={open}
           >
@@ -123,7 +123,7 @@ export default function PublicNavbar() {
 
         <Link
           href="/signup"
-          className="px-4 py-2 text-sm font-medium text-white bg-violet-500 rounded-md shadow hover:bg-violet-600 transition-colors flex items-center justify-center"
+          className="sm:px-4 px-2 py-2  text-sm font-medium text-white bg-violet-500 rounded-md shadow hover:bg-violet-600 transition-colors flex items-center justify-center"
         >
           SignUp
         </Link>

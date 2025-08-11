@@ -45,7 +45,7 @@ export default function SignIn() {
     })
 
     if (res?.error) {
-      setformError(res.error);
+      setformError(typeof res.error === "string" ? res.error : "An unexpected error occurred.");
     }else{
         try{
             const response=await axios.post('api/auth/set-token');

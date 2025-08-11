@@ -1,3 +1,4 @@
+import { dbConnect } from "@/lib/mongodb";
 import { redis } from "@/lib/redis";
 import UserModel from "@/model/userModel";
 import { emailVerifySchema } from "@/schemas/emailVerifySchema";
@@ -14,7 +15,7 @@ export async function POST(request:Request){
             message: parseResult.error.issues[0].message,
         }, { status: 400 });
     }
-
+    await dbConnect();
     const { email, otp } = parseResult.data;
 
     const user=await UserModel.findOne({email:email.toLowerCase().trim()});
@@ -32,7 +33,7 @@ export async function POST(request:Request){
           message: "User is already verified"
         }, { status: 400 });
     }
-
+ 
     const redisKey=`otp:${email.toLowerCase().trim()}`;
     const storedOtp=await redis.get(redisKey);
     if(!storedOtp){
@@ -42,7 +43,7 @@ export async function POST(request:Request){
         }, { status: 400 });
     }
 
-    if(storedOtp !== otp){
+    if(storedOtp != otp){
         return NextResponse.json({
             success: false,
             message: "Invalid OTP",
