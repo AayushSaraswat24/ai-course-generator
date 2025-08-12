@@ -106,8 +106,17 @@ export default function SignIn() {
                             control={form.control}
                             name="password"
                             render={({ field }) => (
-                                <FormItem className="w-full">
-                                    <FormLabel className="text-lg">Password</FormLabel>
+                                <FormItem className="w-full gap-0">
+                                    <FormLabel className="text-lg ">Password</FormLabel>
+                                    <div className="flex justify-end mb-1 items-center sm:space-x-2 space-x-1">
+                                        <Link href="/sendVerifyEmail" className="sm:text-sm text-xs hover:text-gray-500 text-blue-500">
+                                        VerifyEmail
+                                        </Link>
+                                        <span className="text-gray-400">|</span>
+                                        <Link href="/sendresetpassword" className="sm:text-sm text-xs hover:text-gray-500 text-blue-500">
+                                        ResetPassword
+                                        </Link>
+                                  </div>
                                     <FormControl className="relative">
                                         <div>
                                             <Input className="w-full p-4 border-none" type={showPassword ? "text" : "password"} placeholder="Enter your password" {...field} />
@@ -164,12 +173,6 @@ export default function SignIn() {
 
                 </div>
 
-                <div className="flex flex-col justify-center items-center mt-4">
-                <Link href="/sendVerifyEmail" className="text-blue-500 text-center cursor-pointer hover:underline">
-                    sendVerifyEmail?
-                </Link>
-                </div>
-                
                 </div>
                 
             </div>

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import axios from 'axios';
-import { Loader2Icon } from 'lucide-react';
+import { Eye, EyeOff, Loader2Icon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { z } from 'zod';
@@ -23,6 +23,7 @@ export default function ResetPasswordPage() {
     });
     const verifyToken = uuidSchema.safeParse({ token });
  
+    const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -81,9 +82,26 @@ export default function ResetPasswordPage() {
                 {error && <p className="text-red-500">{error}</p>}
                 {success && <p className="text-green-500">{success}</p>}
 
-                <div className="space-y-4 text-center w-full max-w-md px-4 ">
+                <div className="space-y-4 text-center w-full max-w-md px-4  ">
                     <Label htmlFor="password" className="text-lg">Password</Label>
-                    <Input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} id="password" className="bg-gray-100 p-4 border-none" placeholder="Password" />
+                    <div className="relative ">
+
+                    <Input type={showPassword ? "text" : "password"}  value={newPassword} onChange={e => setNewPassword(e.target.value)} id="password" className="bg-gray-100 p-4 border-none w-full " placeholder="Password" />
+                    {showPassword ? (
+                            <Eye
+                            className="absolute right-3 top-1/5 trans-translate-y-1/2 text-gray-300 cursor-pointer"
+                            onClick={() => setShowPassword(false)}
+                             onMouseDown={e => e.preventDefault()}
+                             />
+                        ) : (
+                             <EyeOff
+                            className="absolute right-3 top-1/5  trans-translate-y-1/2 text-gray-300 cursor-pointer"
+                            onClick={() => setShowPassword(true)}
+                            onMouseDown={e => e.preventDefault()}
+                            />
+                            )}
+
+                    </div>
 
                     <Button disabled={isLoading} onClick={handleSubmit} className=" border-purple-500 border-2 font-bold cursor-pointer px-6 sm:px-10 hover:bg-purple-500 bg-transparent hover:border-0  dark:hover:text-black hover:text-white text-purple-700 ">
                         {isLoading ? <Loader2Icon className="animate-spin" /> : "Update"}
