@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     try {
         const body = await request.json();
         const resetSchema = z.object({
-            token: z.string().uuid("token is not valid"),
+            token: z.uuid("token is not valid"),
             newPassword: z.string().min(6,"Password must be at least 6 characters long").max(20,"Password must be at most 20 characters long"),
         });
 

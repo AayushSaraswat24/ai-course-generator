@@ -33,7 +33,7 @@ export default function SendVerifyEmailPage() {
                 return;
             }
 
-            const response=await axios.post("/api/auth/sendVerifyEmail",{email:result.data.email})
+            const response=await axios.post("/api/auth/sendForgotPasswordEmail",{email:result.data.email})
             setSuccess(response.data.message);
             setEmail("");
 
@@ -51,9 +51,9 @@ export default function SendVerifyEmailPage() {
             <div className="flex flex-col flex-1 justify-center items-center ">
 
                 <div className="mb-6 text-center px-2">
-                    <h1 className="text-2xl font-bold ">Verify Your Email</h1>
+                    <h1 className="text-2xl font-bold ">Reset Your Password</h1>
                     <p className="mt-2 text-gray-600 dark:text-gray-300 whitespace-break-spaces">
-                        To continue, please enter your email address below and we’ll send you a verification link. This helps us keep your account secure.
+                        Enter your email address below and we’ll send you a link to reset your password.
                     </p>
                 </div>
 
@@ -67,7 +67,7 @@ export default function SendVerifyEmailPage() {
                 <Button disabled={isLoading} onClick={handleSubmit} className=" border-purple-500 border-2 font-bold cursor-pointer px-6 sm:px-10 hover:bg-purple-500 bg-transparent hover:border-0  dark:hover:text-black hover:text-white text-purple-700 ">
                     {
                     isLoading ? <Loader2Icon className="animate-spin" />  : "Validate"
-                    }
+            }
                     </Button>
 
                 </div>
