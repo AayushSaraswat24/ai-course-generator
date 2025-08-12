@@ -76,9 +76,13 @@ export const authOptions :NextAuthOptions= {
                  }
                  
                 if (!existingUser) {
+                    let userName = user.email.split('@')[0];
+                    if (userName.length > 20) {
+                        userName = userName.slice(0, 20);
+                    }
                     const newUser = await UserModel.create({
                         email: user.email,
-                        userName: user.email.split('@')[0],
+                        userName,
                         isVerified: true, 
                     });
                     
@@ -88,7 +92,11 @@ export const authOptions :NextAuthOptions= {
                     user.id=existingUser._id.toString();
                     user.plan=existingUser.subscription.plan;
                 }
-                user.userName=user.email.split('@')[0];
+                let userName = user.email.split('@')[0];
+                    if (userName.length > 20) {
+                        userName = userName.slice(0, 20);
+                    }
+                user.userName=userName;
             }
             return true;
         },

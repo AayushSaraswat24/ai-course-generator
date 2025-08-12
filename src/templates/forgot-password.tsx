@@ -1,11 +1,8 @@
-
 export default function ForgotPassword({
   username,
-  otp,
   resetUrl,
 }: {
   username: string;
-  otp: string;
   resetUrl: string;
 }) {
   return `
@@ -15,15 +12,7 @@ export default function ForgotPassword({
       </div>
       <h2 style="color: #1e293b;">Hello ${username},</h2>
       <p style="font-size: 1.1rem;">You requested to reset your password for <strong>Courgen</strong>.</p>
-      <p style="margin-bottom: 1.5rem;">Please use the OTP below to proceed:</p>
-
-      <div style="font-size: 2rem; font-weight: bold; background: #fbbf24; color: #1e293b;
-                  padding: 16px 32px; display: inline-block; border-radius: 8px;
-                  letter-spacing: 6px; margin-bottom: 1.5rem;">
-        ${otp}
-      </div>
-
-      <p style="margin-top: 2rem;">Or click the button below to reset your password:</p>
+      <p style="margin-bottom: 1.5rem;">Click the button below to reset your password:</p>
 
       <a href="${resetUrl}" style="background-color: #2563eb; color: #fff;
          padding: 12px 28px; border-radius: 6px; text-decoration: none;
@@ -34,7 +23,7 @@ export default function ForgotPassword({
       <p style="margin-top: 1.5rem;">If the button doesn't work, copy and paste this link into your browser:</p>
       <p style="word-break: break-word; color: #2563eb;">${resetUrl}</p>
 
-      <p style="margin-top: 2rem; color: #64748b;">This code will expire in 5 minutes.<br>
+      <p style="margin-top: 2rem; color: #64748b;">This link will expire in 15 minutes.<br>
       If you did not request this, please ignore this email.</p>
 
       <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e5e7eb;">

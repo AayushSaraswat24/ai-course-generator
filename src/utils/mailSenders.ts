@@ -16,9 +16,9 @@ export async function sendVerificationEmail(to: string, username: string, otp: s
     });
 }
 
-export async function sendResetPasswordEmail(to: string, username: string, otp: string) {
-    const resetUrl = `${BaseUrl}/reset?email=${encodeURIComponent(to)}`;
-    const html=ResetPassword({username,otp,resetUrl});
+export async function sendResetPasswordEmail(to: string, username: string, token:string) {
+    const resetUrl = `${BaseUrl}/resetPassword?token=${token}`;
+    const html=ResetPassword({username,resetUrl});
 
     return sendEmail({
         to,
