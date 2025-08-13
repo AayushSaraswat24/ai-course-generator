@@ -1,6 +1,7 @@
 import { concurrentFetchYoutubeVideos } from "@/lib/helper/concurrentFetchYtVideos";
 import { courseGenerator } from "@/lib/helper/courseGenerator";
 import { generateCoursePlan } from "@/lib/helper/generateCoursePlan";
+import { dbConnect } from "@/lib/mongodb";
 import { redis } from "@/lib/redis";
 import { verifyAccessToken } from "@/lib/verifyAccessToken";
 import UserModel from "@/model/userModel";
@@ -31,6 +32,7 @@ export async function POST(request:NextRequest){
 
         const {prompt,userKnowledge,includeVideos}=parsed.data;
 
+        await dbConnect();
         if(!mongoose.Types.ObjectId.isValid(payload.id)){
           return NextResponse.json({
             success: false,
@@ -151,5 +153,3 @@ export async function POST(request:NextRequest){
         }, { status: 500});
     }
 }
-
-// more error handling and try to reduce the response time currently taking 26 second for whole route .

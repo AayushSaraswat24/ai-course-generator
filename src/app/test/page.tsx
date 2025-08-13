@@ -1,4 +1,5 @@
 "use client";
+import LoginNavbar from "@/components/loginNavbar";
 import { useState } from "react";
 
 type NoteChunk = { topic: string; notes: string };
@@ -85,6 +86,7 @@ export default function StreamNotesClient() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <LoginNavbar /> 
       <h1 className="text-3xl font-bold">📚 AI Notes Generator</h1>
 
       <div className="space-y-2">
