@@ -85,8 +85,9 @@ export default function StreamNotesClient() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div>
       <LoginNavbar /> 
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
       <h1 className="text-3xl font-bold">📚 AI Notes Generator</h1>
 
       <div className="space-y-2">
@@ -96,13 +97,13 @@ export default function StreamNotesClient() {
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Enter your topic..."
           className="w-full border rounded p-2"
-        />
+          />
 
         <select
           value={userKnowledge}
           onChange={(e) => setUserKnowledge(e.target.value)}
           className="w-full border rounded p-2"
-        >
+          >
           <option value="beginner">Beginner</option>
           <option value="moderate">Moderate</option>
           <option value="advanced">Advanced</option>
@@ -113,7 +114,7 @@ export default function StreamNotesClient() {
             type="checkbox"
             checked={includeVideos}
             onChange={(e) => setIncludeVideos(e.target.checked)}
-          />
+            />
           Include YouTube Videos
         </label>
 
@@ -121,7 +122,7 @@ export default function StreamNotesClient() {
           onClick={handleGenerate}
           disabled={loading || !prompt.trim()}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-        >
+          >
           {loading ? "Generating..." : "Generate"}
         </button>
       </div>
@@ -143,12 +144,12 @@ export default function StreamNotesClient() {
                   <h3 className="font-semibold text-blue-700 mb-2">{item.title}</h3>
                   {embedUrl ? (
                     <iframe
-                      src={embedUrl}
-                      width="100%"
-                      height="200"
-                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="rounded"
+                    src={embedUrl}
+                    width="100%"
+                    height="200"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="rounded"
                     />
                   ) : (
                     <p className="text-red-500">⚠️ Video not available</p>
@@ -174,5 +175,6 @@ export default function StreamNotesClient() {
 
       {loading && <p className="text-gray-600 font-medium">⏳ Streaming content...</p>}
     </div>
+      </div>
   );
 }

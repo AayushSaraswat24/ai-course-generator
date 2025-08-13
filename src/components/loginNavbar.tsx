@@ -2,31 +2,18 @@
 
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
-import { useEffect, useRef, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Menu, X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
-export default function LoginNavbar() {
+export default function SignedInNavbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openTheme, setOpenTheme] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  if (!mounted) return null;
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   const themes = [
     { value: 'light', label: 'Light' },
@@ -34,50 +21,71 @@ export default function LoginNavbar() {
     { value: 'system', label: 'System' },
   ];
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!open) {
-      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
-        setOpen(true);
-        setHighlightedIndex(0);
-      }
-      return;
-    }
 
-    if (e.key === 'ArrowDown') {
-      setHighlightedIndex((prev) => (prev === null ? 0 : (prev + 1) % themes.length));
-    } else if (e.key === 'ArrowUp') {
-      setHighlightedIndex((prev) =>
-        prev === null ? themes.length - 1 : (prev - 1 + themes.length) % themes.length
-      );
-    } else if (e.key === 'Enter' && highlightedIndex !== null) {
-      setTheme(themes[highlightedIndex].value);
-      setOpen(false);
-    } else if (e.key === 'Escape') {
-      setOpen(false);
+  useEffect(() => setMounted(true), []);
+
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpenTheme(false);
+      }
     }
-  };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const links = [
+    { href: '/quiz', label: 'Quiz' },
+    { href: '/test', label: 'Test' },
+    { href: '/pdf-summary', label: 'PDF Summary' },
+    { href: '/dashboard', label: 'Dashboard' },
+  ];
 
   return (
-    <nav className="flex items-center justify-between px-3 sm:px-6 py-4 bg-white dark:bg-neutral-900 shadow-sm relative">
-      <div className="absolute left-6 right-6 top-full h-px bg-gray-300 dark:bg-gray-700" aria-hidden="true" />
+    <nav className="flex items-center justify-between px-4 py-4 bg-white dark:bg-neutral-900 shadow-sm relative">
 
-      <Link href="/" className="sm:text-2xl mr-1 text-lg font-bold text-violet-500 cursor-pointer">
+      <Link href="/" className="text-xl sm:text-2xl font-bold text-violet-500">
         CourGen
       </Link>
 
-      <div className="flex items-center space-x-2 sm:space-x-4">
 
-        <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={() => setOpen((prev) => !prev)}
-            onKeyDown={handleKeyDown}
-            className="px-3 sm:w-22 py-2 text-sm font-medium cursor-pointer text-gray-700 bg-white rounded-md shadow-sm dark:bg-gray-800 dark:text-white focus:outline-none flex items-center justify-between"
-            aria-haspopup="listbox"
-            aria-expanded={open}
+      <div className="hidden md:flex space-x-6">
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={`hover:text-violet-500 relative pb-1 ${
+              pathname === link.href ? 'text-violet-500 font-semibold' : ''
+            }`}
           >
-            {themes.find((t) => t.value === theme)?.label || 'Select Theme'}
+            {link.label}
+            {pathname === link.href && (
+              <span className="absolute left-0 -bottom-0.5 w-full h-0.5 bg-violet-500 rounded"></span>
+            )}
+          </Link>
+        ))}
+      </div>
+
+      <div className="flex items-center space-x-3">
+
+        <div
+          className="relative"
+          ref={dropdownRef}
+          onMouseEnter={() => setOpenTheme(true)}
+          onMouseLeave={() => {
+            setOpenTheme(false);
+            setHighlightedIndex(null);
+          }}
+        >
+          <button
+            className="px-3 py-2 text-sm font-medium cursor-pointer text-gray-700 bg-white rounded-md shadow-sm dark:bg-gray-800 dark:text-white focus:outline-none flex items-center justify-between"
+            aria-haspopup="listbox"
+            aria-expanded={openTheme}
+          >
+            {mounted ? themes.find((t) => t.value === theme)?.label || 'Select Theme' : '...'}
             <span
-              className={`ml-2 transform transition-transform duration-200 ${open ? 'rotate-180' : 'rotate-0'}`}
+              className={`ml-2 transform transition-transform duration-200 ${openTheme ? 'rotate-180' : 'rotate-0'}`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -92,12 +100,13 @@ export default function LoginNavbar() {
             </span>
           </button>
 
-          {open && (
+
+          <div className="absolute left-0 top-full h-2 w-full" aria-hidden="true" />
+
+          {openTheme && (
             <ul
               role="listbox"
-              className="absolute mt-1 w-32 bg-white dark:bg-gray-800 shadow-lg rounded-md overflow-hidden z-50
-                         transform origin-top transition-all duration-200 ease-out scale-95 opacity-0
-                         animate-dropdown"
+              className="absolute left-0 top-full w-24 bg-white dark:bg-gray-800 shadow-lg rounded-md overflow-hidden z-50 animate-dropdown"
             >
               {themes.map((t, index) => (
                 <li
@@ -107,7 +116,7 @@ export default function LoginNavbar() {
                   onMouseEnter={() => setHighlightedIndex(index)}
                   onClick={() => {
                     setTheme(t.value);
-                    setOpen(false);
+                    setOpenTheme(false);
                   }}
                   className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 
                     ${theme === t.value ? 'font-semibold text-violet-500' : ''} 
@@ -120,16 +129,48 @@ export default function LoginNavbar() {
           )}
         </div>
 
-        <Link
-          href="/signup"
-          className="sm:px-4 px-2 py-2  text-sm font-medium text-white bg-violet-500 rounded-md shadow hover:bg-violet-600 transition-colors flex items-center justify-center"
+
+        <button
+          onClick={() => setMobileOpen(true)}
+          className="md:hidden p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
         >
-          SignUp
-        </Link>
+          <Menu className="w-5 h-5" />
+        </button>
       </div>
+
+
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-40" onClick={() => setMobileOpen(false)}>
+          <div
+            className="absolute top-0 right-0 w-64 h-full bg-white dark:bg-neutral-900 shadow-lg p-4 flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-lg font-bold text-violet-500">Menu</span>
+              <button onClick={() => setMobileOpen(false)}>
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`py-2 hover:text-violet-500 ${
+                  pathname === link.href ? 'text-violet-500 font-semibold' : ''
+                }`}
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
+
 
 // todo : create the login navbar as private navbar add navigation links for exclusive page . 
 // then create the chatBox for prompt they needed to be diff bcz some has include video some don't so i think all the page has prompt + userKnowledge so gonna make that first . after that need to work on main function . i have added the login navbar in the test page for preview of changes .
