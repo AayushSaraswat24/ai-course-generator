@@ -30,6 +30,24 @@
   .animate-dropdown {
     animation: dropdown 0.2s ease-out forwards;
   }
+
+.custom-scrollbar {
+  scrollbar-color: #a0aec0 #1a202c;
+}
+
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #1a202c; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #a0aec0;
+}
+
 }
 
 @theme inline {

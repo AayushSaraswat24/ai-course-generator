@@ -1,5 +1,6 @@
 "use client";
 import LoginNavbar from "@/components/loginNavbar";
+import PromptBox from "@/components/promptBox";
 import { useState } from "react";
 
 type NoteChunk = { topic: string; notes: string };
@@ -175,6 +176,8 @@ export default function StreamNotesClient() {
 
       {loading && <p className="text-gray-600 font-medium">⏳ Streaming content...</p>}
     </div>
+
+     <PromptBox onSubmit={(prompt, level) => console.log(`Prompt: ${prompt}, Level: ${level}`)} />
       </div>
   );
 }
