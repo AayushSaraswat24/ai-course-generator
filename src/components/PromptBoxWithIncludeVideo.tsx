@@ -7,7 +7,7 @@ interface PromptBoxProps {
 }
 
 export default function PromptBoxWithIncludeVideo({ onSubmit }: PromptBoxProps) {
-  const [selectedLevel, setSelectedLevel] = useState("Beginner");
+  const [selectedLevel, setSelectedLevel] = useState("beginner");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [includeVideo, setIncludeVideo] = useState(false);
 

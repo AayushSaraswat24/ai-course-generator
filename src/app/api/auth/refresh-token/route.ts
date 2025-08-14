@@ -28,9 +28,9 @@ export async function POST(request: NextRequest) {
             res.cookies.set('refreshToken', '', { maxAge: 0, path: '/' });
             return res;
         }
-
+    console.log(`token data from redis on refresh-token route without parsed ${tokenData} |||| parsed data ${JSON.parse(tokenData)}`)
         await redis.del(redisKey);
-
+        
         const {id,email,plan}=JSON.parse(tokenData);
 
         const accessToken=generateAccessToken({ id, email,plan });

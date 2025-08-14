@@ -149,7 +149,7 @@ export async function POST(request:NextRequest){
         console.log(`error in generate-notes route ${error}`);
         return NextResponse.json({
           success: false,
-          message: "Internal server error"
+          message: "Internal server error rara"
         }, { status: 500});
     }
 }
