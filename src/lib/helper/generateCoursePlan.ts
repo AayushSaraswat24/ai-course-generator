@@ -1,4 +1,4 @@
-import { genAI } from "@/lib/helper/gemini"; // your Gemini instance
+import { genAI } from "@/lib/helper/gemini";
 
 export async function generateCoursePlan(rawTopic: string, userKnowledge: string,includeVideos:boolean){
 

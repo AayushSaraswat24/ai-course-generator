@@ -10,7 +10,7 @@ export const courseInputSchema=z.object({
   }),
 
     userKnowledge:z
-    .enum(["beginner", "moderate", "advanced"])
+    .enum(["beginner", "intermediate", "advanced"])
     .refine((val) => !!val, {
       message: "Invalid knowledge level.",
     }),

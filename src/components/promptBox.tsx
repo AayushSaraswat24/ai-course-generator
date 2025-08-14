@@ -22,7 +22,7 @@ export default function PromptBox({ onSubmit }: PromptBoxProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const levels = ["Beginner", "Intermediate", "Professional"];
+  const levels = ["beginner", "intermediate", "advanced"];
 
   // Auto grow textarea height
   const handleInput = () => {
@@ -34,15 +34,19 @@ export default function PromptBox({ onSubmit }: PromptBoxProps) {
   };
 
   const handleSend = () => {
+    const textarea = textareaRef.current;
     const prompt = textareaRef.current?.value.trim() || "";
     if (!prompt) return; 
     onSubmit(prompt, selectedLevel);
-    if (textareaRef.current) textareaRef.current.value = "";
+    if (textarea) {
+    textarea.value = "";
+    textarea.style.height = "auto"; 
+  }
   };
 
   return (
     <div className="fixed bottom-6 p-2 left-0 w-full flex justify-center z-50">
-      <div className="relative w-full max-w-3xl bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-300 dark:border-gray-700 p-4 pt-10">
+      <div className="relative w-full max-w-3xl bg-gray-100 dark:bg-neutral-800 rounded-2xl shadow-lg border border-gray-300 dark:border-gray-700 p-4 pt-10">
         
         <div ref={dropdownRef} className="absolute -top-3 left-4">
           <button
@@ -71,7 +75,6 @@ export default function PromptBox({ onSubmit }: PromptBoxProps) {
           )}
         </div>
 
-        
         <div className="flex items-end">
           <textarea
             ref={textareaRef}

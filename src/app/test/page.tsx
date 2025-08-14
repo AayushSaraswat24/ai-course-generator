@@ -1,6 +1,7 @@
 "use client";
+
 import LoginNavbar from "@/components/loginNavbar";
-import PromptBox from "@/components/promptBox";
+import PromptBoxWithIncludeVideo from "@/components/PromptBoxWithIncludeVideo";
 import { useState } from "react";
 
 type NoteChunk = { topic: string; notes: string };
@@ -88,7 +89,7 @@ export default function StreamNotesClient() {
   return (
     <div>
       <LoginNavbar /> 
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl mx-auto p-6 space-y-6 pb-42">
       <h1 className="text-3xl font-bold">📚 AI Notes Generator</h1>
 
       <div className="space-y-2">
@@ -177,7 +178,8 @@ export default function StreamNotesClient() {
       {loading && <p className="text-gray-600 font-medium">⏳ Streaming content...</p>}
     </div>
 
-     <PromptBox onSubmit={(prompt, level) => console.log(`Prompt: ${prompt}, Level: ${level}`)} />
+     {/* <PromptBox onSubmit={(prompt, level) => console.log(`Prompt: ${prompt}, Level: ${level}`)} /> */}
+     <PromptBoxWithIncludeVideo onSubmit={(prompt, level, includeVideo) => console.log(`Prompt: ${prompt}, Level: ${level}, Include Video: ${includeVideo}`)} />
       </div>
   );
 }

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import CourseModel from "@/model/courseModel";
 import UserModel from "@/model/userModel";
 import { verifyAccessToken } from "@/lib/verifyAccessToken";
+import { dbConnect } from "@/lib/mongodb";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,6 +26,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    await dbConnect();
     const userId = new mongoose.Types.ObjectId(payload.id);
     const user = await UserModel.findById(userId);
 

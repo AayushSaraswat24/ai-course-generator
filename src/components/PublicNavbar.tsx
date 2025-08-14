@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useEffect, useRef, useState } from 'react';
 
-export default function LoginNavbar() {
+export default function PublicNavbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
