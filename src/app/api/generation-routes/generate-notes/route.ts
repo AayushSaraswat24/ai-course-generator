@@ -124,8 +124,9 @@ export async function POST(request:NextRequest){
           async start(controller) {
 
             controller.enqueue(
-              encoder.encode(JSON.stringify({ type: "metadata", ytVideos }) + "\n")
-            );
+        encoder.encode(JSON.stringify({ type: "metadata", ytVideos, mainTopic: topics.mainTopic }) + "\n")
+        );
+
 
             const reader = notesStream.getReader();
             while (true) {
