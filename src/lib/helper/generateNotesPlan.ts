@@ -45,5 +45,3 @@ if (raw.endsWith("```")) {
 return raw;
     
 }
-
-// work on prompt to return fixed structure in case of error and success both . keep the number of subtopic in control like max 10 .

@@ -1,9 +1,9 @@
-
 "use client";
 
 type YTVideo = { title: string; video: { url: string; title: string; thumbnail: string } | null };
 
 export default function VideoGrid({ videos }: { videos: YTVideo[] }) {
+  
   const getEmbedUrl = (url: string) => {
     const longMatch = url.match(/v=([a-zA-Z0-9_-]+)/);
     const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);

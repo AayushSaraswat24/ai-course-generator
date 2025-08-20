@@ -1,4 +1,4 @@
-import { generateCoursePlan } from "@/lib/helper/generateCoursePlan";
+import { generateCoursePlan } from "@/lib/helper/generateNotesPlan";
 import { NextResponse } from "next/server";
 
 export async function POST(request:Request){

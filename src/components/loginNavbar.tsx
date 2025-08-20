@@ -37,7 +37,7 @@ export default function SignedInNavbar() {
 
   const links = [
     { href: '/quiz', label: 'Quiz' },
-    { href: '/test', label: 'Test' },
+    { href: '/notes', label: 'Notes' },
     { href: '/pdf-summary', label: 'PDF Summary' },
     { href: '/dashboard', label: 'Dashboard' },
   ];

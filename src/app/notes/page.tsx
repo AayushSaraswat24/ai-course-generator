@@ -7,7 +7,6 @@ import { fetchStream } from "@/lib/fetchWithstream";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import { Bookmark, Loader2 } from "lucide-react";
 import clsx from "clsx";
-
 import Toast from "@/components/streamingUi/Toast";
 import Bubble from "@/components/streamingUi/Bubble";
 import VideoGrid from "@/components/streamingUi/VideoGrid";
@@ -27,7 +26,7 @@ type Message = {
   error?: string;
   notesChunks?: NoteChunk[];
   ytVideos?: YTVideo[];
-  mainTopic?: string;   // ✅ NEW
+  mainTopic?: string;  
   meta?: { userKnowledge: string; includeVideos: boolean; prompt: string };
   saved?: boolean;
   saving?: boolean;
@@ -48,7 +47,7 @@ export default function StreamNotesClient() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages.length]);
 
-  // ============ Handle Submit ============
+ 
   async function handleSubmit(prompt: string, level: string, includeVideos: boolean) {
     const userMsg: Message = { id: uid(), role: "user", content: prompt };
     const assistantMsgId = uid();
@@ -58,10 +57,11 @@ export default function StreamNotesClient() {
       isStreaming: true,
       notesChunks: [],
       ytVideos: [],
-      mainTopic: "", 
+      mainTopic: "",
       meta: { userKnowledge: level, includeVideos, prompt },
     };
 
+    {/* prev refers to the whole message . its not like a loop where prev refers to every single element of array instead its the whole array . we can say that this is the old value before updating using setMessages function .*/}
     setMessages((prev) => [...prev, userMsg, assistantMsg]);
 
     const { stream, error } = await fetchStream({
@@ -89,25 +89,68 @@ export default function StreamNotesClient() {
         if (done) break;
 
         buffer += decoder.decode(value, { stream: true });
+
+       
         let idx = buffer.lastIndexOf("\n");
         if (idx === -1) continue;
+
         const lines = buffer.slice(0, idx).split("\n");
         buffer = buffer.slice(idx + 1);
 
         for (const line of lines) {
           if (!line.trim()) continue;
+
           try {
             const json = JSON.parse(line);
 
+            
             if (json.type === "metadata") {
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === assistantMsgId
-                    ? { ...m, ytVideos: json.ytVideos || [], mainTopic: json.mainTopic || "" } // ✅ save mainTopic
+                    ? {
+                        ...m,
+                        ytVideos: json.ytVideos || [],
+                        mainTopic: json.mainTopic || "",
+                      }
                     : m
                 )
               );
-            } else if (json.topic && json.notes) {
+              continue;
+            }
+
+          
+            if (json.topic && !json.notes) {
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantMsgId
+                    ? {
+                        ...m,
+                        notesChunks: [...(m.notesChunks || []), { topic: json.topic as string, notes: "" }],
+                      }
+                    : m
+                )
+              );
+              continue;
+            }
+
+         
+            if (typeof json.notes === "string") {
+              setMessages((prev) =>
+                prev.map((m) => {
+                  if (m.id !== assistantMsgId) return m;
+                  const chunks = m.notesChunks || [];
+                  if (chunks.length === 0) return m; // guard if notes comes before topic
+                  const last = chunks[chunks.length - 1];
+                  const updatedLast = { ...last, notes: (last.notes || "") + json.notes };
+                  return { ...m, notesChunks: [...chunks.slice(0, -1), updatedLast] };
+                })
+              );
+              continue;
+            }
+
+           
+            if (json.topic && json.notes) {
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === assistantMsgId
@@ -119,7 +162,7 @@ export default function StreamNotesClient() {
           } catch {
             // ignore bad lines
           }
-        }
+        }  
       }
     } catch {
       setMessages((prev) =>
@@ -130,7 +173,7 @@ export default function StreamNotesClient() {
     }
   }
 
-  // ============ Handle Save ============
+
   async function handleSave(msg: Message) {
     if (!msg.notesChunks || msg.notesChunks.length === 0) return;
 
@@ -159,13 +202,13 @@ export default function StreamNotesClient() {
 
   const conversation = useMemo(() => messages, [messages]);
 
-  // ============ RENDER ============
+
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
       <LoginNavbar />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-[160px]">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4">📚 AI Notes Generator</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4">Notes Generator</h1>
 
         <div className="space-y-6">
           {conversation.map((m) =>
@@ -215,15 +258,26 @@ export default function StreamNotesClient() {
                 {!m.error && (m.notesChunks?.length || 0) > 0 && (
                   <div className="mt-4 flex items-center justify-between gap-3">
                     <div className="text-xs text-neutral-500">
-                      {m.mainTopic && <>Main Topic: <span className="font-medium">{m.mainTopic}</span> • </>}
-                      {m.meta?.userKnowledge && <>Level: <span className="font-medium">{m.meta.userKnowledge}</span></>}
+                      {m.mainTopic && (
+                        <>
+                          Main Topic: <span className="font-medium">{m.mainTopic}</span> •{" "}
+                        </>
+                      )}
+                      {m.meta?.userKnowledge && (
+                        <>
+                          Level: <span className="font-medium">{m.meta.userKnowledge}</span>
+                        </>
+                      )}
                       {typeof m.meta?.includeVideos === "boolean" && (
-                        <> • Videos: <span className="font-medium">{String(m.meta.includeVideos)}</span></>
+                        <>
+                          {" "}
+                          • Videos: <span className="font-medium">{String(m.meta.includeVideos)}</span>
+                        </>
                       )}
                     </div>
 
                     <div className="flex gap-2">
-                      {/* Save */}
+                    
                       <button
                         onClick={() => handleSave(m)}
                         disabled={m.saving || m.saved}
@@ -249,7 +303,7 @@ export default function StreamNotesClient() {
                         )}
                       </button>
 
-                      {/* Download PDF */}
+                      
                       <button
                         onClick={() =>
                           m.notesChunks && generatePdf(m.mainTopic || "AI Notes", m.notesChunks, m.ytVideos)
@@ -274,3 +328,17 @@ export default function StreamNotesClient() {
     </div>
   );
 }
+
+// why we need buffer -- Example:
+// Server sends this line:
+
+// {"topic":"Intro"}\n
+
+
+// But you might receive it in 2 chunks:
+
+// Chunk 1: {"top
+// Chunk 2: ic":"Intro"}\n
+
+
+// So a single reader.read() call doesn’t guarantee one JSON line. That’s why we need buffer.

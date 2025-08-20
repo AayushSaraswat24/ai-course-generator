@@ -66,7 +66,7 @@ export async function fetchStream({
 
     // At this point, success => return the stream
     return {
-      stream: res.body, // Native ReadableStream
+      stream: res.body, 
       error: null,
       statusCode: res.status,
     };
