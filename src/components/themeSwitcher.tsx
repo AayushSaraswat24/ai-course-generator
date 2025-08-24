@@ -3,7 +3,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx'; // A utility for conditionally joining CSS class names together
-import { useTheme } from 'next-themes';
 // Define a type for the options. We'll use a generic to make the component more reusable.
 // For this example, we'll keep it simple with a string union.
 type ThemeOption = 'light' | 'dark' | 'system';

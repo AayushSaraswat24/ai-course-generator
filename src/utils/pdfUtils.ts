@@ -1,4 +1,3 @@
-// utils/pdfUtils.ts
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 

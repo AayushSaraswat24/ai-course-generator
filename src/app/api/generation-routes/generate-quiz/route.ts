@@ -1,8 +1,9 @@
 import { generateQuiz } from "@/lib/helper/generateQuiz";
+import { dbConnect } from "@/lib/mongodb";
 import { redis } from "@/lib/redis";
 import { verifyAccessToken } from "@/lib/verifyAccessToken";
 import UserModel from "@/model/userModel";
-import { quizSchema } from "@/schemas/quizInputSchema";
+import { quizSchema } from "@/schemas/quizSchema";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -17,10 +18,10 @@ export async function POST(request:NextRequest){
         }
 
         const body=await request.json();
+
         const parsed=quizSchema.safeParse(body);
         if(!parsed.success){
             const firstError = parsed.error.issues?.[0]?.message || "Invalid input";
-
             return NextResponse.json({
             success: false,
             message: firstError,
@@ -36,6 +37,7 @@ export async function POST(request:NextRequest){
           }, { status: 400 });
         }
 
+        await dbConnect();
         const userId=new mongoose.Types.ObjectId(payload.id);
         const user= await UserModel.findOne({_id:userId});
         if(!user){
@@ -69,7 +71,7 @@ export async function POST(request:NextRequest){
         const requestLimit=quota ? quota : 1;
        
         // max 4 request per week for free user and 20 for pro .
-        if((user.subscription.plan=='free' && requestLimit>=4) || (user.subscription.plan=='pro' && requestLimit>=20) ){
+        if((user.subscription.plan=='free' && requestLimit>=400) || (user.subscription.plan=='pro' && requestLimit>=200) ){
             const ttl=await redis.ttl(redisKey);
              return NextResponse.json({
                success: false,
@@ -86,6 +88,7 @@ export async function POST(request:NextRequest){
             }, { status: 500 });
         }
         const quiz=JSON.parse(quizString);
+        
         if(!quiz.questions){
             return NextResponse.json({
               success: false,
@@ -97,7 +100,7 @@ export async function POST(request:NextRequest){
          if(updateQuota===1){
             await redis.expire(redisKey,60*60*24*7);
         }
-        
+
         return NextResponse.json({
           success: true,
           message: "quiz generated successfully ",

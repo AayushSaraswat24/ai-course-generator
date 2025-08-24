@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {          /* This script removes the delay in loading the selected theme and eliminate flicker. */}
+        
         <script
           dangerouslySetInnerHTML={{
             __html: `

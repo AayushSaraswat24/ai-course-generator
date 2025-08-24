@@ -7,7 +7,8 @@ export async function generateQuiz(topic:string,userKnowledge:string){
             {
             "prompt": {
             inappropriate:"false",
-            cause:"educational"
+            cause:"educational",
+            mainTopic:"AI",
             },
             questions:[
             {
@@ -40,7 +41,7 @@ export async function generateQuiz(topic:string,userKnowledge:string){
         raw = raw.slice(0, -3);
         }
 
-        return raw;
+        return raw; 
 
     }catch(error:any){
         console.log(`Error in generate quiz: ${error}`);

@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { title, notes, videoLinks } = body;
 
-    // Validate required fields
+
     if (!Array.isArray(title) || !Array.isArray(notes)) {
       return NextResponse.json(
         { success: false, message: "Invalid or missing title/notes" },
@@ -37,10 +37,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Enforce course saving quota by plan
+ 
     const plan = user.subscription.plan;
     const savedCount = user.savedCourses.length;
-    const limit = plan === "free" ? 5 : plan === "pro" ? 20 : 50;
+    // set free to 5 now its 50 for testing .
+    const limit = plan === "free" ? 50 : plan === "pro" ? 20 : 50;
 
     if (savedCount >= limit) {
       return NextResponse.json(
