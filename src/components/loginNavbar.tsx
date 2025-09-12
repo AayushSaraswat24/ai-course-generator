@@ -170,7 +170,3 @@ export default function SignedInNavbar() {
     </nav>
   );
 }
-
-
-// todo : create the login navbar as private navbar add navigation links for exclusive page . 
-// then create the chatBox for prompt they needed to be diff bcz some has include video some don't so i think all the page has prompt + userKnowledge so gonna make that first . after that need to work on main function . i have added the login navbar in the test page for preview of changes .

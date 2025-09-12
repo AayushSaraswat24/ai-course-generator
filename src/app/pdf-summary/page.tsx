@@ -14,7 +14,7 @@ export default function PDFSummaryPage() {
 
         const fileInput = (e.currentTarget.elements.namedItem('file') as HTMLInputElement);
         const file = fileInput?.files?.[0];
-        const plan = 'free'; // hardcoded for now
+        const plan = 'free'; 
 
         if (!file) {
             setError('Please upload a PDF file.');
@@ -91,3 +91,4 @@ export default function PDFSummaryPage() {
         </div>
     );
 }
+// make the page with navbar and pdf upload prompt box and normal page design .

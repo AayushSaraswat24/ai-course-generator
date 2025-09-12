@@ -6,6 +6,7 @@ import { verifyAccessToken } from '@/lib/verifyAccessToken';
 import UserModel from '@/model/userModel';
 import mongoose from 'mongoose';
 import { redis } from '@/lib/redis';
+import { dbConnect } from '@/lib/mongodb';
 
 
 export async function POST(req: NextRequest) {
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest) {
           }, { status: 400 });
         }
 
+        await dbConnect();
         const userId=new mongoose.Types.ObjectId(payload.id);
         const user= await UserModel.findOne({_id:userId});
 
