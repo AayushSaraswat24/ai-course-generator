@@ -35,9 +35,9 @@ export async function courseGenerator(mainTopic: string, topics: string, userKno
     {"topic":"useState"}
     {"notes":"useState lets a function component hold state between renders."}
 `;
-
+    // something is wrong with gemini 2.5 flash that's why using gemini 2.5 flash lite for now .
     const result = await genAI.models.generateContentStream({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash-lite",
       contents: prompt,
     });
 

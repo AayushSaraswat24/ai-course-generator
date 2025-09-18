@@ -172,7 +172,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        message: "Internal server error rara",
+        message: "Internal server error rara plz try again later",
       },
       { status: 500 }
     );

@@ -36,10 +36,20 @@ export default function QuizPage() {
   async function handleSubmit(newPrompt: string, newUserKnowledge: string) {
     if (!newPrompt.trim()) return;
 
+    if (loading){
+      setToast({
+          open: true,
+          kind: "error",
+          message: `Please wait for the current request to finish.`,
+        });
+        setTimeout(() => setToast((t) => ({ ...t, open: false })), 2200);
+        return;
+    };
+
+    setLoading(true);
     setPrompt(newPrompt);
     setUserKnowledge(newUserKnowledge);
 
-    setLoading(true);
     setQuestions([]);
     setRevealed([]);
     setAllRevealed(false);
@@ -270,4 +280,3 @@ export default function QuizPage() {
     </div>
   );
 }
-// understand how pdf generation works , clean the /dark and themeProvider lib function , work on pdf summarization page . 

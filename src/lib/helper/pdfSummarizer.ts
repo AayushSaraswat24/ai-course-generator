@@ -3,29 +3,25 @@ import {genAI} from "./gemini";
 export async function pdfSummarizer(text:string){
     try{
         const prompt=`
-        You are an advanced AI assistant. Your instructions are divided into two parts: a primary safety directive and a secondary summarization task.
+You are an advanced AI assistant. Follow these instructions:
 
-        **Primary Directive: Safety First**
-        Your first and most important task is to analyze the provided text for safety violations (e.g., hate speech, explicit violence, harassment).
+1. **Safety Check:** If the text contains unsafe content (e.g., hate speech, explicit violence, harassment), stop immediately and output only: "This content cannot be summarized because it violates safety guidelines." Otherwise, continue.
 
-        * **If the content is UNSAFE:** You must stop immediately. Your ONLY output should be a single, user-friendly sentence explaining the issue. For example: "This content cannot be summarized because it violates our safety guidelines."
-        * **If the content is SAFE:** Do NOT mention the safety check in your response. Proceed silently to the summarization task below and produce ONLY the summary.
+2. **Summarization:** Summarize the PDF so that someone can understand its main content and purpose quickly. Focus on:
+   - The primary topic or story
+   - Main sections, arguments, or events
+   - Ignore exercises, questions, grammar lessons, or formatting details
+   - Be detailed, clear, and readable
+   - Use a paragraph if the PDF has one continuous narrative, or 3–5 bullet points if there are multiple main sections
 
-        **Summarization Task (Only if content is safe)**
-        Analyze the document's structure and purpose to generate the most effective and user-friendly summary possible.
-
-        1.  **Determine Optimal Format:** Based on the text, decide on the best format.
-            * For a series of distinct points or findings, use a **bullet-point list**.
-            * For a complex, interconnected argument, use a **concise paragraph**.
-            * For a formal or business document, consider an **executive summary** format.
-        2.  **Generate Summary:** Create a clean, well-written summary in the format you have determined to be most effective. Ensure the summary is comprehensive yet concise, and ignore any formatting errors from the PDF extraction.
+3. Output only the summary.
 
         Here is the text:
             ${text}
         `;
-
+        // something is wrong with 2.5 flash that's why using  Gemini 2.5 pro and flash lite can't handle this pdf summarization .
         const result = await genAI.models.generateContentStream({
-        model:"gemini-2.5-flash",
+        model:"gemini-2.5-pro",
         contents: prompt,
     });
     const encoder = new TextEncoder();

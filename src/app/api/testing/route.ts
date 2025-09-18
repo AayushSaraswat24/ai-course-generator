@@ -10,4 +10,4 @@ export async function POST(request:Request){
     })
 }
 
-// todo : make the send verify email link on signIn page beautiul. make the forgot password route + page and add that to sign in and then start working on front-end of main features .
+// todo : make the send verify email link on signIn page beautiul. make the forgot password route + page and add that to sign in and then start working on front-end of main features . this page is meant to be deletd later .

@@ -4,7 +4,7 @@ import "jspdf-autotable";
 type NoteChunk = { topic: string; notes: string };
 type YTVideo = { title: string; video: { url: string; title: string; thumbnail: string } | null };
 
-// ✅ Capitalize helper
+
 function capitalizeTitle(title: string) {
   return title ? title.charAt(0).toUpperCase() + title.slice(1) : "";
 }

@@ -108,7 +108,12 @@ export const authOptions :NextAuthOptions= {
 
                 const refreshToken=uuid();
                 const redisKey=`refreshToken:${refreshToken}`;
-                await redis.set(redisKey,JSON.stringify({id:user.id,email:user.email,plan:user.plan}),{ex:60*60*24*7});
+                try{
+                    await redis.set(redisKey,JSON.stringify({id:user.id,email:user.email,plan:user.plan}),{ex:60*60*24*7});
+                }catch(err){
+                    console.error("Error storing refresh token in Redis:",err);
+                    throw new Error("Internal server error");
+                }
 
                 return {
                     ...token ,
@@ -137,7 +142,7 @@ export const authOptions :NextAuthOptions= {
 
     },
     pages:{
-        signIn:'/sign-in',
+        signIn:'/signin',
         error:'/error'
     },
     jwt:{

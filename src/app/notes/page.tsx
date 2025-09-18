@@ -38,6 +38,7 @@ function uid() {
 
 export default function StreamNotesClient() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<{ open: boolean; kind: "success" | "error"; message: string }>(
     { open: false, kind: "success", message: "" }
   );
@@ -49,6 +50,8 @@ export default function StreamNotesClient() {
 
  
   async function handleSubmit(prompt: string, level: string, includeVideos: boolean) {
+    if (loading) return;
+    setLoading(true);
     const userMsg: Message = { id: uid(), role: "user", content: prompt };
     const assistantMsgId = uid();
     const assistantMsg: Message = {
@@ -76,6 +79,7 @@ export default function StreamNotesClient() {
           m.id === assistantMsgId ? { ...m, isStreaming: false, error: error?.message || "Unexpected error" } : m
         )
       );
+      setLoading(false);
       return;
     }
 
@@ -170,6 +174,7 @@ export default function StreamNotesClient() {
       );
     } finally {
       setMessages((prev) => prev.map((m) => (m.id === assistantMsgId ? { ...m, isStreaming: false } : m)));
+      setLoading(false);
     }
   }
 
