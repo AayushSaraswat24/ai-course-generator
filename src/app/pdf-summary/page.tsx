@@ -170,4 +170,4 @@ export default function PDFSummarizerPage() {
   );
 }
 // next thing to make dashboard to show all the save quizes and notes and option to delete them .
-// we can add something like change gmail and other too on dashboard and will search what should be there too . or we should don't give dashboard option and give saves option . then we need to make the payment gateway for diff plans .
+// we can add something like change gmail and other too on dashboard and will search what should be there too . or we should don't give dashboard option and give saves option . then we need to make the payment gateway for diff plans . also make the notes and quiz prompt box send prompt with enter . other things to add Change registered email (and maybe password) and Profile settings panel (show username, subscription plan) .

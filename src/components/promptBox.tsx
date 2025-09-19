@@ -85,6 +85,12 @@ export default function PromptBox({ onSubmit }: PromptBoxProps) {
           <textarea
             ref={textareaRef}
             onInput={handleInput}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
             placeholder="Type your prompt..."
             className="flex-1 bg-transparent outline-none px-3 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 resize-none overflow-y-auto max-h-32 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-zinc-400 scrollbar-track-transparent"
             rows={1}
