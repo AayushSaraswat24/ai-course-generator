@@ -43,6 +43,7 @@ export function CustomSelect({ options, value, onChange, className }: CustomSele
     <div 
       className={clsx("relative font-inter", className)}
       ref={selectRef}
+      onMouseEnter={() => setIsOpen(!isOpen)}
     >
       
       <button
