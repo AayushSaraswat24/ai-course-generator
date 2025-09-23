@@ -7,7 +7,6 @@ import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 
-
 export async function GET(request:NextRequest){
     try{
         const payload= verifyAccessToken(request);
@@ -62,7 +61,7 @@ export async function GET(request:NextRequest){
       .sort({ createdAt: -1 })
       .lean();
 
-    
+   
     return NextResponse.json({
       success: true,
       user: {

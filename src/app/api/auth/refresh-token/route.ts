@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         if (!refreshToken) {
             const res= NextResponse.json({
                 success: false,
-                message: "Refresh token not found",
+                message: "Refresh token not found. Please log in again.",
             }, { status: 401 });
             res.cookies.set('accessToken', '', { maxAge: 0, path: '/' });
             res.cookies.set('refreshToken', '', { maxAge: 0, path: '/' });

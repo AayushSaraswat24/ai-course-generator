@@ -176,6 +176,7 @@ export default function StreamNotesClient() {
       setMessages((prev) => prev.map((m) => (m.id === assistantMsgId ? { ...m, isStreaming: false } : m)));
       setLoading(false);
     }
+    console.log("messages at end of streaming", JSON.stringify(messages));
   }
 
 
@@ -184,8 +185,8 @@ export default function StreamNotesClient() {
 
     const titles = msg.notesChunks.map((c) => c.topic);
     const notes = msg.notesChunks.map((c) => c.notes);
-    const videoLinks = msg.ytVideos?.map((v) => v.video?.url).filter(Boolean) as string[];
-
+    const videoLinks = msg.ytVideos;
+    console.log(`videoLinks`, videoLinks);
     setMessages((prev) => prev.map((m) => (m.id === msg.id ? { ...m, saving: true } : m)));
 
     const { success, error } = await fetchWithAuth({
@@ -204,7 +205,6 @@ export default function StreamNotesClient() {
       setTimeout(() => setToast((t) => ({ ...t, open: false })), 2200);
     }
   }
-
   const conversation = useMemo(() => messages, [messages]);
 
 
@@ -216,8 +216,9 @@ export default function StreamNotesClient() {
         <h1 className="text-2xl sm:text-3xl font-bold mb-4">Notes Generator</h1>
 
         <div className="space-y-6">
-          {conversation.map((m) =>
-            m.role === "user" ? (
+          {conversation.map((m) => {
+            console.log(`current message: ${JSON.stringify(m)}`);
+           return m.role === "user" ? (
               <Bubble key={m.id} align="right">
                 <div className="text-sm text-neutral-800 dark:text-neutral-100 whitespace-pre-wrap">{m.content}</div>
                 {m.meta && (
@@ -240,7 +241,7 @@ export default function StreamNotesClient() {
                     <Loader2 className="h-4 w-4 animate-spin" /> Streaming…
                   </div>
                 )}
-
+                
                 {m.notesChunks && m.notesChunks.length > 0 && (
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold">📘 Notes</h3>
@@ -257,7 +258,7 @@ export default function StreamNotesClient() {
                     ))}
                   </div>
                 )}
-
+                
                 {m.ytVideos && m.ytVideos.length > 0 && <VideoGrid videos={m.ytVideos} />}
 
                 {!m.error && (m.notesChunks?.length || 0) > 0 && (
@@ -321,7 +322,7 @@ export default function StreamNotesClient() {
                   </div>
                 )}
               </Bubble>
-            )
+            ) }
           )}
 
           <div ref={bottomRef} />
