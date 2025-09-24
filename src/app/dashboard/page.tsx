@@ -5,8 +5,11 @@ import { Download, Trash2, ChevronDown, ChevronUp, Loader2, Eye } from 'lucide-r
 import { fetchWithAuth } from '@/lib/fetchWithAuth';
 import VideoGrid from '@/components/streamingUi/VideoGrid';
 import { generatePdf } from '@/utils/pdfUtils';
+import { generateQuizPdf } from '@/utils/quizPdf';
+import { useRouter } from 'next/navigation';
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -22,7 +25,7 @@ export default function DashboardPage() {
           return;
         }
         setData(response.success);
-        console.log(`response`, JSON.stringify(response.success));
+        
       } catch (error:any) {
         setError('Failed to fetch dashboard data .');
       } finally {
@@ -100,7 +103,7 @@ export default function DashboardPage() {
     data.notes.map((note: any) => (
       <div
         key={note._id}
-        className="border rounded-lg mb-3 w-full max-w-full bg-white dark:bg-neutral-900 shadow"
+        className="border rounded-lg mb-3  max-w-full bg-white dark:bg-neutral-900 shadow"
       >
         <button
           onClick={() =>
@@ -124,7 +127,7 @@ export default function DashboardPage() {
                 <div className="font-bold text-blue-700 dark:text-blue-400">
                   {title}
                 </div>
-                <div className="whitespace-pre-wrap text-neutral-800 dark:text-neutral-200 mt-1">
+                <div className="whitespace-pre-wrap  text-neutral-800 dark:text-neutral-200 mt-1">
                   {note.notes[idx]}
                 </div>
               </div>
@@ -167,7 +170,7 @@ export default function DashboardPage() {
                       }));
                     }
                   } catch (err) {
-                    console.error("Delete failed:", err);
+                    console.log("Delete failed:", err);
                   }
                 }}
                 className="btn btn-sm btn-error flex items-center gap-1"
@@ -183,43 +186,133 @@ export default function DashboardPage() {
 </section>
 
 
-        {/* Quizzes Section */}
-        <section>
-          <h3 className="text-lg font-bold mb-3">Saved Quizzes</h3>
-          {data.quizzes.length === 0 ? (
-            <p className="text-gray-500 dark:text-gray-400 text-center italic">No saved quizzes yet.</p>
-          ) : (
-            data.quizzes.map((quiz: any,i:number) => (
-              <div key={quiz._id} className="border rounded-lg mb-3 w-full max-w-full">
-                <button
-                  onClick={() => setOpenQuiz(openQuiz === quiz._id ? null : quiz._id)}
-                  className="w-full text-left p-3 font-semibold flex justify-between items-center"
-                >
-                   <span className="truncate">quiz {i + 1}</span>
-                    {openQuiz === quiz._id ? <ChevronUp /> : <ChevronDown />}
-                </button>
-                {openQuiz === quiz._id && (
-                  <div className="p-3 border-t">
-                    <p className="whitespace-pre-line break-words">{quiz.content}</p>
-                    <div className="flex gap-2 mt-2 flex-wrap">
-                      <button className="btn btn-sm btn-outline flex items-center gap-1">
-                        <Download size={16} /> PDF
-                      </button>
-                      <button className="btn btn-sm btn-error flex items-center gap-1">
-                        <Trash2 size={16} /> Delete
-                      </button>
-                      <button className="btn btn-sm btn-primary flex items-center gap-1">
-                        <Eye size={16} /> Open
-                      </button>
-                    </div>
-                  </div>
-                )}
+{/* Quizzes Section */}
+<section>
+  <h3 className="text-lg font-bold mb-3">Saved Quizzes</h3>
+  {data.quizzes.length === 0 ? (
+    <p className="text-gray-500 dark:text-gray-400 text-center italic">
+      No saved quizzes yet.
+    </p>
+  ) : (
+    data.quizzes.map((quiz: any, i: number) => (
+      <div
+        key={quiz._id}
+        className="border rounded-lg mb-3 w-full max-w-full bg-white dark:bg-neutral-900 shadow"
+      >
+        <button
+          onClick={() => setOpenQuiz(openQuiz === quiz._id ? null : quiz._id)}
+          className="w-full text-left p-3 font-semibold flex justify-between items-center"
+        >
+          <span className="truncate">Quiz {i + 1} </span>
+          {openQuiz === quiz._id ? <ChevronUp /> : <ChevronDown />}
+        </button>
+
+        {openQuiz === quiz._id && (
+          <div className="p-4 space-y-4">
+            <h3 className="text-lg font-semibold">📝 Quiz</h3>
+
+            {quiz.questions.map((q: any, idx: number) => (
+              <div
+                key={idx}
+                className="p-4 bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg"
+              >
+                <p className="font-semibold mb-2">
+                  {idx + 1}. {q.question}
+                </p>
+                <ul className="list-disc pl-6 space-y-1 text-neutral-800 dark:text-neutral-200">
+                  {q.options.map((opt: string, j: number) => (
+                    <li key={j}>{opt}</li>
+                  ))}
+                </ul>
+                <div className="mt-3">
+                  <p className="text-green-700 dark:text-green-400">
+                    ✅ Correct Answer: {q.correctAnswer + 1} • {q.options[q.correctAnswer]}
+                  </p>
+                  {q.explanation && (
+                    <p className="text-sm italic text-neutral-600 dark:text-neutral-400 mt-1">
+                      💡 Explanation: {q.explanation}
+                    </p>
+                  )}
+                </div>
               </div>
-            ))
-          )}
-        </section>
+            ))}
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 pt-3 border-t border-neutral-200 dark:border-neutral-800">
+              <button
+                onClick={() => {
+                  sessionStorage.setItem("quizQuestions", JSON.stringify(quiz.questions));
+                  router.push("/quiz/start");
+                }}
+                className="btn btn-sm btn-primary flex items-center gap-1"
+              >
+                📝 Give Test
+              </button>
+
+              <button
+                onClick={() => generateQuizPdf(quiz.questions)}
+                className="btn btn-sm btn-outline flex items-center gap-1"
+              >
+                <Download size={18} /> PDF
+              </button>
+
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await fetchWithAuth({
+                      path: `/api/delete-data/delete-quiz?id=${quiz._id}`,
+                      method: "DELETE",
+                    });
+                    if (res.success) {
+                      setData((prev: any) => ({
+                        ...prev,
+                        quizzes: prev.quizzes.filter((q: any) => q._id !== quiz._id),
+                      }));
+                    }
+                  } catch (err) {
+                    console.log("Delete failed:", err);
+                  }
+                }}
+                className="btn btn-sm btn-error flex items-center gap-1"
+              >
+                <Trash2 size={18} /> Delete
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    ))
+  )}
+</section>
+      {/* Logout Button */}
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={async () => {
+            try {
+              const res = await fetch("/api/auth/logout", { method: "POST" });
+              const data = await res.json();
+
+              if (data.success) {
+                router.push("/signin"); 
+              }
+             
+            } catch (err) {
+              console.log("Logout error:", err);
+              setTimeout(()=>{
+                setError(null);
+              },2000);
+              setError("Logout failed. Please try again.");
+            }
+          }}
+          className="text-lg font-semibold p-3 rounded-xl bg-purple-600 hover:bg-purple-700"
+        >
+          Logout
+        </button>
+      </div>
+
       </div>
     </div>
   );
 }
-// so problem is my video grid function to show vidoes of notes is accepting the whole array that has thumbnail , title and url but in my data from db which you can see from data have only url so i might need to send whole data to save and then update the save and model to accept the whole data to show the yt videos on dashboard notes like notes page .  you will get the whole message object in console of notes and can see them on json formatter . the data im getting here for yt videos is in data you can print it and watch the data through json formater too . after all this work on quizzes and then improve the ui for notes and quizzes in dashboard with mobile first approach .
+
+// design logout button . when change the path in logout to get error to test the fail case we got a error check that something related to docType . then on opening notes the width of element increases on dashboard fix that . add the middleware to prevent pages from unlogged in users . fix all routes limits for free and paid users . after that add the payment gateway . 
