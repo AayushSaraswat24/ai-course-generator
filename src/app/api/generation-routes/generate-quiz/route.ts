@@ -95,7 +95,7 @@ export async function POST(request:NextRequest){
               message: "Quiz format is invalid. ai error",
             }, { status: 500 });
         }
-        //2nd part of suspected code . done this for incresing the quota only if ai returns a valid response .
+        // done this for incresing the quota only if ai returns a valid response .
         const updateQuota=await redis.incr(redisKey);
          if(updateQuota===1){
             await redis.expire(redisKey,60*60*24*7);

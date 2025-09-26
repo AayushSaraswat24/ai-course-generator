@@ -173,4 +173,4 @@ export default function HomePage() {
   );
 }
 
-// remove unused route and components. resets limit , using google credit learn to upload this project and then add the payments and host on vercel , document it on github readme , diff btw edge like vercel is edge runtime and normal runtime maybe i have it in my notes in pc of things in my mind .
+// using google credit learn to upload this project and then add the payments and host on vercel , document it on github readme .

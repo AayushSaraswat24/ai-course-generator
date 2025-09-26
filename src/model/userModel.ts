@@ -1,7 +1,7 @@
 import mongoose,{Document,Schema} from "mongoose";
 
 export interface Subscription{
-    plan:'free' | 'pro' | 'enterprise';
+    plan:'free' | 'pro' | 'premium';
     status:'active' | 'canceled' | 'trialing';
     startedAt:Date;
     expiredAt?:Date;
