@@ -70,8 +70,8 @@ export async function POST(req: NextRequest) {
         if(requestLimit===1){
             await redis.expire(pdfSummarizationLimitKey,60*60*24*7);
         }
-        // for free 3 and for pro 20 .
-         if((user.subscription.plan=='free' && requestLimit>300) || (user.subscription.plan=='pro' && requestLimit>200) ){
+        // for free 5 and for pro 20 for a week .
+         if((user.subscription.plan=='free' && requestLimit>5) || (user.subscription.plan=='pro' && requestLimit>20) ){
             const ttl=await redis.ttl(pdfSummarizationLimitKey);
             const hoursLeft = Math.ceil(ttl / 3600);
              return NextResponse.json({
@@ -88,12 +88,12 @@ export async function POST(req: NextRequest) {
         const validation = validateWordLimit(text, sub.plan as any);
 
         // comment out this for testing and increase the word limit from the function validateWordLimit.
-        // if (!validation.valid) {
-        //     return NextResponse.json({
-        //       success: false,
-        //       message: `PDF is too long. Word limit exceeded by ${validation.overLimitBy} words. total size by words: ${validation.wordCount}`
-        //     }, { status:400  });
-        // }
+        if (!validation.valid) {
+            return NextResponse.json({
+              success: false,
+              message: `PDF is too long. Word limit exceeded by ${validation.overLimitBy} words. total size by words: ${validation.wordCount} . allowed limit : ${validation.allowedLimit}  words for ${sub.plan} plan.`,
+            }, { status:400  });
+        }
 
         const stream = await pdfSummarizer(text);
         return new Response(stream);

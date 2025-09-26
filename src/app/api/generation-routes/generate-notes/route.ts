@@ -83,10 +83,10 @@ export async function POST(request: NextRequest) {
     if (requestLimit === 1) {
       await redis.expire(redisKey, 60 * 60 * 24 * 7);
     }
-    // reduce the limit to 4 and 20 .
+    // reduce the limit to 10 and 20 for 1 week .
     if (
-      (user.subscription.plan == "free" && requestLimit > 400) ||
-      (user.subscription.plan == "pro" && requestLimit > 200)
+      (user.subscription.plan == "free" && requestLimit > 10) ||
+      (user.subscription.plan == "pro" && requestLimit > 20)
     ) {
       const ttl = await redis.ttl(redisKey);
       const hoursLeft = Math.ceil(ttl / 3600);

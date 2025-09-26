@@ -12,17 +12,18 @@ export function countWords(text:string):number{
 export function validateWordLimit(
     text:string,
     plan:'free' | 'pro' | 'enterprise',
-):{ valid:boolean; wordCount:number; overLimitBy?:number}{
+):{ valid:boolean; wordCount:number; overLimitBy?:number ; allowedLimit?:number }{
     const wordCount=countWords(text);
-    const limit=plan==='free' ? 500 :2500;
+    const limit=plan==='free' ? 5000 : plan==='pro' ? 25000 : 75000;
 
     if(wordCount<=limit){
-        return {valid:true,wordCount};
+        return {valid:true,wordCount,allowedLimit:limit};
     }
 
     return {
         valid:false,
         wordCount,
         overLimitBy:wordCount-limit,
+        allowedLimit:limit
     }
 }

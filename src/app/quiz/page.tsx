@@ -61,7 +61,7 @@ export default function QuizPage() {
         method: "POST",
         data: { prompt: newPrompt, userKnowledge: newUserKnowledge },
       });
-      console.log(`success ${JSON.stringify(success)}`)
+
       if (error || !success) {
         setToast({
           open: true,

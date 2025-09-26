@@ -65,13 +65,13 @@ export async function POST(request:NextRequest){
           }, { status: 403 });
         }
 
-        // suspected code in case of error .
+       
         const redisKey=`quiz:${user._id}`;
         const quota=await redis.get<number | null>(redisKey);
         const requestLimit=quota ? quota : 1;
        
-        // max 4 request per week for free user and 20 for pro .
-        if((user.subscription.plan=='free' && requestLimit>=400) || (user.subscription.plan=='pro' && requestLimit>=200) ){
+        // max 10 request per week for free user and 20 for pro .
+        if((user.subscription.plan=='free' && requestLimit>=10) || (user.subscription.plan=='pro' && requestLimit>=20) ){
             const ttl=await redis.ttl(redisKey);
              return NextResponse.json({
                success: false,

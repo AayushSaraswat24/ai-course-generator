@@ -40,8 +40,8 @@ export async function POST(req: NextRequest) {
  
     const plan = user.subscription.plan;
     const savedCount = user.savedCourses.length;
-    // set free to 5 now its 50 for testing .
-    const limit = plan === "free" ? 50 : plan === "pro" ? 20 : 50;
+    // set free to 5 , pro to 15 and premium to 30 .
+    const limit = plan === "free" ? 5 : plan === "pro" ? 15 : 30;
 
     if (savedCount >= limit) {
       return NextResponse.json(

@@ -176,7 +176,7 @@ export default function StreamNotesClient() {
       setMessages((prev) => prev.map((m) => (m.id === assistantMsgId ? { ...m, isStreaming: false } : m)));
       setLoading(false);
     }
-    console.log("messages at end of streaming", JSON.stringify(messages));
+
   }
 
 
@@ -186,7 +186,7 @@ export default function StreamNotesClient() {
     const titles = msg.notesChunks.map((c) => c.topic);
     const notes = msg.notesChunks.map((c) => c.notes);
     const videoLinks = msg.ytVideos;
-    console.log(`videoLinks`, videoLinks);
+
     setMessages((prev) => prev.map((m) => (m.id === msg.id ? { ...m, saving: true } : m)));
 
     const { success, error } = await fetchWithAuth({
@@ -217,7 +217,7 @@ export default function StreamNotesClient() {
 
         <div className="space-y-6">
           {conversation.map((m) => {
-            console.log(`current message: ${JSON.stringify(m)}`);
+
            return m.role === "user" ? (
               <Bubble key={m.id} align="right">
                 <div className="text-sm text-neutral-800 dark:text-neutral-100 whitespace-pre-wrap">{m.content}</div>
