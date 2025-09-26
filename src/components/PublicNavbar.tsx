@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function PublicNavbar() {
   const { theme, setTheme } = useTheme();
+  const [hasCookie, setHasCookie] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
@@ -22,6 +23,24 @@ export default function PublicNavbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  useEffect(()=>{
+    async function fetchCookie(){
+      try{
+        const res=await fetch('/api/auth/user');
+        const data=await res.json();
+        console.log(`data`, data);
+        if(data.success){
+          setHasCookie(true);
+        }
+      }catch(err:any){
+        console.log(`err`, err);
+      }
+      
+    }
+    fetchCookie();
+
+   }, []);
 
   if (!mounted) return null;
 
@@ -92,14 +111,26 @@ export default function PublicNavbar() {
             </ul>
           )}
         </div>
-
-        <Link
-          href="/signup"
-          className="sm:px-4 px-2 py-2 text-sm font-medium text-white bg-violet-500 rounded-md shadow hover:bg-violet-600 transition-colors flex items-center justify-center"
-        >
-          SignUp
-        </Link>
+          {hasCookie ?
+          (
+              <Link
+              href="/notes"
+              className="sm:px-4 px-2 py-2 text-sm font-medium text-white bg-violet-500 rounded-md shadow hover:bg-violet-600 transition-colors flex items-center justify-center"
+              >
+                Notes
+              </Link>
+          ):
+          (
+            <Link
+              href="/signup"
+              className="sm:px-4 px-2 py-2 text-sm font-medium text-white bg-violet-500 rounded-md shadow hover:bg-violet-600 transition-colors flex items-center justify-center"
+            >
+              SignUp
+            </Link>
+          )
+        }
+       
       </div>
     </nav>
   );
-}
+}      

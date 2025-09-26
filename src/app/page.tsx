@@ -1,103 +1,176 @@
+"use client";
+
+import PublicNavbar from "@/components/PublicNavbar";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+export default function HomePage() {
+  const illustrations = [
+    {
+      src: "/ai-hero.png",
+      alt: "AI Hero Illustration",
+    },
+    {
+      src: "/ai-pdf.png",
+      alt: "PDF Summaries Illustration",
+    },
+    {
+      src: "/ai-notes.png",
+      alt: "Smart Notes Illustration",
+    },
+    {
+      src: "/ai-quiz.png",
+      alt: "Quiz Generator Illustration",
+    },
+
+    // either these images or these .
+
+    //     {
+    //   src: "/hero_image.png",
+    //   alt: "AI Hero Illustration",
+    // },
+    // {
+    //   src: "/pdf_summary.png",
+    //   alt: "PDF Summaries Illustration",
+    // },
+    // {
+    //   src: "/smart_notes.png",
+    //   alt: "Smart Notes Illustration",
+    // },
+    // {
+    //   src: "/quiz_generator.png",
+    //   alt: "Quiz Generator Illustration",
+    // },
+  ];
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 min-h-screen">
+      {/* Navbar */}
+      <PublicNavbar />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+      {/* Hero Section */}
+      <section className="w-full py-32 bg-neutral-50 dark:bg-neutral-950">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col-reverse md:flex-row items-center gap-12">
+          <div className="flex-1 space-y-6">
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+              Revolutionize Your Learning with AI
+            </h1>
+            <p className="text-lg md:text-xl text-neutral-700 dark:text-neutral-300">
+              Summarize PDFs, organize notes, generate quizzes, and study smarter — all in one intelligent app designed for students and professionals.
+            </p>
+            <div className="flex flex-wrap gap-4 mt-4">
+              <Link
+                href="/signin"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg font-semibold shadow-lg transition"
+              >
+                Get Started
+              </Link>
+              <Link
+                href="/signup"
+                className="border border-purple-600 hover:border-purple-700 text-purple-600 hover:text-purple-700 px-8 py-4 rounded-lg font-semibold transition"
+              >
+                Learn More
+              </Link>
+            </div>
+          </div>
+
+          <div className="flex-1 relative w-full h-[500px] md:h-[600px]">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src={illustrations[0].src}
+              alt={illustrations[0].alt}
+              fill
+              className="object-contain rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      </section>
+
+      {/* Why Choose Section */}
+      <section className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-12 items-center">
+        <div className="relative w-full h-[400px] md:h-[500px]">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src={illustrations[1].src}
+            alt={illustrations[1].alt}
+            fill
+            className="object-contain rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        </div>
+        <div className="space-y-6">
+          <h2 className="text-4xl font-bold">Save Time with AI Summaries</h2>
+          <p className="text-neutral-700 dark:text-neutral-300 text-lg md:text-xl">
+            Our AI automatically reads your PDFs and generates concise summaries, helping you focus on what matters most.
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-neutral-600 dark:text-neutral-400">
+            <li>Summarize long documents in seconds</li>
+            <li>Highlight important sections automatically</li>
+            <li>Keep your notes organized and searchable</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Smart Notes Section */}
+      <section className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-12 items-center">
+        <div className="order-2 md:order-1 space-y-6">
+          <h2 className="text-4xl font-bold">Organize Notes Like a Pro</h2>
+          <p className="text-neutral-700 dark:text-neutral-300 text-lg md:text-xl">
+            Capture, categorize, and manage your study notes efficiently. AI helps structure your content and makes reviewing easy.
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-neutral-600 dark:text-neutral-400">
+            <li>Automatic tagging and categorization</li>
+            <li>Quick search for any topic</li>
+            <li>Integrates with your summaries and quizzes</li>
+          </ul>
+        </div>
+        <div className="order-1 md:order-2 relative w-full h-[400px] md:h-[500px]">
           <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+            src={illustrations[2].src}
+            alt={illustrations[2].alt}
+            fill
+            className="object-contain rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800"
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        </div>
+      </section>
+
+      {/* Quiz Generator Section */}
+      <section className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-12 items-center">
+        <div className="relative w-full h-[400px] md:h-[500px]">
           <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+            src={illustrations[3].src}
+            alt={illustrations[3].alt}
+            fill
+            className="object-contain rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800"
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+        <div className="space-y-6">
+          <h2 className="text-4xl font-bold">Test Your Knowledge</h2>
+          <p className="text-neutral-700 dark:text-neutral-300 text-lg md:text-xl">
+            Generate quizzes automatically from your notes and summaries. Reinforce learning and track progress effortlessly.
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-neutral-600 dark:text-neutral-400">
+            <li>Customizable question types</li>
+            <li>Instant answers and explanations</li>
+            <li>Track performance over time</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-32 text-center bg-neutral-100 dark:bg-neutral-900">
+        <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          Ready to revolutionize your learning?
+        </h2>
+        <p className="text-neutral-700 dark:text-neutral-300 text-lg md:text-xl mb-10">
+          Join thousands of learners who are boosting their productivity with AI-assisted study tools.
+        </p>
+        <Link
+          href="/signin"
+          className="bg-purple-600 hover:bg-purple-700 text-white px-10 py-4 rounded-lg font-semibold shadow-lg transition text-lg md:text-xl"
+        >
+          Get Started for Free
+        </Link>
+      </section>
     </div>
   );
 }
+
+// remove unused route and components. resets limit , using google credit learn to upload this project and then add the payments and host on vercel , document it on github readme , diff btw edge like vercel is edge runtime and normal runtime maybe i have it in my notes in pc of things in my mind .
