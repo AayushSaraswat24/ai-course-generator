@@ -22,25 +22,6 @@ export default function HomePage() {
       src: "/ai-quiz.png",
       alt: "Quiz Generator Illustration",
     },
-
-    // either these images or these .
-
-    //     {
-    //   src: "/hero_image.png",
-    //   alt: "AI Hero Illustration",
-    // },
-    // {
-    //   src: "/pdf_summary.png",
-    //   alt: "PDF Summaries Illustration",
-    // },
-    // {
-    //   src: "/smart_notes.png",
-    //   alt: "Smart Notes Illustration",
-    // },
-    // {
-    //   src: "/quiz_generator.png",
-    //   alt: "Quiz Generator Illustration",
-    // },
   ];
 
   return (
@@ -74,12 +55,12 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="flex-1 relative w-full h-[500px] md:h-[600px]">
+          <div className="flex-1 relative w-full h-[500px] md:h-[600px] flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800">
             <Image
               src={illustrations[0].src}
               alt={illustrations[0].alt}
               fill
-              className="object-contain rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800"
+              className="object-contain p-6"
             />
           </div>
         </div>
@@ -87,12 +68,12 @@ export default function HomePage() {
 
       {/* Why Choose Section */}
       <section className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-12 items-center">
-        <div className="relative w-full h-[400px] md:h-[500px]">
+        <div className="relative w-full h-[400px] md:h-[500px] flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800">
           <Image
             src={illustrations[1].src}
             alt={illustrations[1].alt}
             fill
-            className="object-contain rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800"
+            className="object-contain p-6"
           />
         </div>
         <div className="space-y-6">
@@ -121,24 +102,24 @@ export default function HomePage() {
             <li>Integrates with your summaries and quizzes</li>
           </ul>
         </div>
-        <div className="order-1 md:order-2 relative w-full h-[400px] md:h-[500px]">
+        <div className="order-1 md:order-2 relative w-full h-[400px] md:h-[500px] flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800">
           <Image
             src={illustrations[2].src}
             alt={illustrations[2].alt}
             fill
-            className="object-contain rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800"
+            className="object-contain p-6"
           />
         </div>
       </section>
 
       {/* Quiz Generator Section */}
       <section className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-12 items-center">
-        <div className="relative w-full h-[400px] md:h-[500px]">
+        <div className="relative w-full h-[400px] md:h-[500px] flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800">
           <Image
             src={illustrations[3].src}
             alt={illustrations[3].alt}
             fill
-            className="object-contain rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800"
+            className="object-contain p-6"
           />
         </div>
         <div className="space-y-6">
@@ -172,5 +153,6 @@ export default function HomePage() {
     </div>
   );
 }
+
 
 // using google credit learn to upload this project and then add the payments and host on vercel , document it on github readme .
