@@ -2,7 +2,7 @@
 
 import PublicNavbar from "@/components/PublicNavbar";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   InputOTP,
   InputOTPGroup,
@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { Loader2Icon } from "lucide-react";
 
-export default function VerifyPage() {
+function VerifyContent() {
     const searchParams=useSearchParams();
     const [email, setEmail] = useState<string|null>(null);
     const [value, setValue] = useState<string>("")
@@ -105,4 +105,14 @@ export default function VerifyPage() {
       
     </div>
   );
+}
+
+export default function VerifyPage(){
+  return (
+    <>
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><Loader2Icon className="animate-spin text-purple-500"/></div>}>
+      <VerifyContent/>
+    </Suspense>
+    </>
+  )
 }
