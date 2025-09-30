@@ -1,8 +1,9 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
+import { Suspense } from "react";
 
-export default function SignInPage() {
+function SigninContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
 
@@ -36,4 +37,12 @@ export default function SignInPage() {
       )}
     </div>
   );
+}
+
+export default function SignInPage(){
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SigninContent />
+    </Suspense>
+  )
 }

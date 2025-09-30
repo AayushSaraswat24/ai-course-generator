@@ -23,3 +23,4 @@ export const config = {
     "/pdf-summary/:path*",
   ],
 };
+// getting some useClient and suspense error due to useSearchParams

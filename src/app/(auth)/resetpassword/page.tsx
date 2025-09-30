@@ -7,14 +7,14 @@ import { Label } from '@/components/ui/label';
 import axios from 'axios';
 import { Eye, EyeOff, Loader2Icon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { z } from 'zod';
 
 const passwordSchema = z.object({
     newPassword: z.string().min(6, "Password must be at least 6 characters long").max(20, "Password must be at most 20 characters long"),
     });
 
-export default function ResetPasswordPage() {
+function ResetPassword() {
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
 
@@ -120,4 +120,14 @@ export default function ResetPasswordPage() {
             </div>
     )
 
+}
+
+export default function ResetPasswordPage(){
+    return (
+        <>
+        <Suspense fallback={<div className="min-h-screen flex justify-center items-center"><Loader2Icon className="animate-spin"/></div>}>
+            <ResetPassword/>
+        </Suspense>
+        </>
+    )
 }

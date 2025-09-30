@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
@@ -51,20 +51,9 @@ export default function SignedInNavbar() {
 
 
       <div className="hidden md:flex space-x-6">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`hover:text-violet-500 relative pb-1 ${
-              pathname === link.href ? 'text-violet-500 font-semibold' : ''
-            }`}
-          >
-            {link.label}
-            {pathname === link.href && (
-              <span className="absolute left-0 -bottom-0.5 w-full h-0.5 bg-violet-500 rounded"></span>
-            )}
-          </Link>
-        ))}
+        <Suspense fallback={null}>
+          <NavLinks links={links} />
+        </Suspense>
       </div>
 
       <div className="flex items-center space-x-3">
@@ -170,3 +159,29 @@ export default function SignedInNavbar() {
     </nav>
   );
 }
+
+function NavLinks({ links }: { links: { href: string; label: string }[] }) {
+  const pathname = usePathname();
+  
+  return (
+    <>
+    {links.map((link) => (
+      <Link
+      key={link.href}
+      href={link.href}
+      className={`hover:text-violet-500 relative pb-1 ${
+        pathname === link.href ? 'text-violet-500 font-semibold' : ''
+      }`}
+      >
+            {link.label}
+            {pathname === link.href && (
+              <span className="absolute left-0 -bottom-0.5 w-full h-0.5 bg-violet-500 rounded"></span>
+            )}
+          </Link>
+        ))}
+        </>
+  )
+
+}
+
+    
