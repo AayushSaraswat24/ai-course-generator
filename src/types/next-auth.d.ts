@@ -6,7 +6,7 @@ declare module "next-auth" {
       id: string;
       email: string;
       userName: string;
-      plan:'free' | 'pro' | 'enterprise';
+      plan:'free' | 'pro' | 'premium';
     };
   }
 
@@ -14,7 +14,7 @@ declare module "next-auth" {
     id: string;
     email: string;
     userName: string;
-    plan:'free' | 'pro' | 'enterprise';
+    plan:'free' | 'pro' | 'premium';
   }
 }
 
@@ -25,6 +25,6 @@ declare module "next-auth/jwt" {
     userName:string;
     accessToken: string;
     refreshToken: string;
-    plan:'free' | 'pro' | 'enterprise';
+    plan:'free' | 'pro' | 'premium';
   }
 }

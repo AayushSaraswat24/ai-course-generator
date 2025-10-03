@@ -21,7 +21,7 @@ export interface User extends Document {
 const subscriptionSchema=new Schema<Subscription>({
     plan:{
         type:String,
-        enum:['free','pro','enterprise'],
+        enum:['free','pro','premium'],
         default:'free',
     },
     status:{
