@@ -72,7 +72,7 @@ export async function POST(request:NextRequest){
             await user.save();
 
             try {
-                const res = await sendPurchaseEmail(user.email, user.userName, plan, now.toDateString(), (updatedPayment.amount / 100).toString() );
+                const res = await sendPurchaseEmail(user.email, user.userName, plan, now.toDateString(), (updatedPayment.amount).toString() );
                   if (!res.success) {
                         throw new Error(res.error);
                     }
