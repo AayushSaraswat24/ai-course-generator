@@ -153,6 +153,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-
-// using google credit learn to upload this project and then add the payments and host on vercel , document it on github readme .

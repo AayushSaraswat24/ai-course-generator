@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     const savedCount = await QuizModel.countDocuments({ createdBy: user._id });
     const limit =
       user.subscription.plan === "free" ? 5 :
-      user.subscription.plan === "pro" ? 20 : 30;
+      user.subscription.plan === "pro" ? 15 : 30;
 
     if (savedCount >= limit) {
       return NextResponse.json({

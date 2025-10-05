@@ -84,10 +84,9 @@ export async function POST(req: NextRequest) {
         const buffer = Buffer.from(arrayBuffer);
 
         const text = await extractText(buffer);
-        // console.log("EXTRACTED TEXT:\n", text);
         const validation = validateWordLimit(text, sub.plan as any);
 
-        // comment out this for testing and increase the word limit from the function validateWordLimit.
+       
         if (!validation.valid) {
             return NextResponse.json({
               success: false,

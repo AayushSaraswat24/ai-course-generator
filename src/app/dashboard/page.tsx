@@ -57,23 +57,30 @@ export default function DashboardPage() {
       <div className="flex-1 overflow-auto px-4 py-6 max-w-full lg:max-w-4xl mx-auto">
 
         {/* User Info Card */}
-        <div className="mb-10 p-6 bg-white dark:bg-neutral-900 rounded-xl shadow-md flex flex-col sm:flex-row items-center sm:items-start gap-6 w-full">
+       <div className="mb-10 p-6 bg-white dark:bg-neutral-900 rounded-xl shadow-md flex flex-col sm:flex-row items-center sm:items-start gap-6 w-full">
           {/* Avatar */}
           <div className="flex-shrink-0 w-24 h-24 rounded-full bg-purple-500 flex items-center justify-center text-white text-4xl font-bold">
             {data.user.name.charAt(0).toUpperCase()}
           </div>
+
           {/* Info */}
-          <div className="flex-1 flex flex-col sm:flex-row sm:justify-between gap-6 flex-wrap w-full">
+          <div className="flex-1 flex flex-col sm:flex-row sm:justify-start gap-6 flex-wrap w-full">
             {/* Name */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-[150px] max-w-full">
               <span className="text-sm sm:text-lg font-medium text-gray-500 dark:text-gray-400">Name:</span>
-              <p className="text-gray-900 dark:text-gray-100 font-semibold text-lg sm:text-xl truncate">{data.user.name}</p>
+              <p className="text-gray-900 dark:text-gray-100 font-semibold text-lg sm:text-xl truncate">
+                {data.user.name}
+              </p>
             </div>
+
             {/* Email */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-[200px] max-w-full">
               <span className="text-sm sm:text-lg font-medium text-gray-500 dark:text-gray-400">Email:</span>
-              <p className="text-gray-900 dark:text-gray-100 font-semibold text-lg sm:text-xl truncate">{data.user.email}</p>
+              <p className="text-gray-900 dark:text-gray-100 font-semibold text-lg sm:text-xl truncate">
+                {data.user.email}
+              </p>
             </div>
+
             {/* Plan */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-[100px] max-w-full">
               <span className="text-sm sm:text-lg font-medium text-gray-500 dark:text-gray-400">Plan:</span>
@@ -89,8 +96,27 @@ export default function DashboardPage() {
                 {data.user.plan}
               </span>
             </div>
+
+            {/* Plan Expiry */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-[150px] max-w-full">
+              <span className="text-sm sm:text-lg font-medium text-gray-500 dark:text-gray-400">Expiry:</span>
+              <span className="text-gray-900 dark:text-gray-100 font-semibold text-lg sm:text-xl">
+                {data.user.plan.toLowerCase() === "free"
+                  ? "∞"
+                  : data.user.expiry
+                  ? (() => {
+                      const now = new Date();
+                      const expiryDate = new Date(data.user.expiry);
+                      const diffTime = expiryDate.getTime() - now.getTime();
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                      return diffDays > 0 ? `${diffDays} day${diffDays > 1 ? "s" : ""}` : "Expired";
+                    })()
+                  : "error"}
+              </span>
+            </div>
           </div>
         </div>
+
 
         {/* Notes Section */}
 <section className="mb-10">
@@ -314,5 +340,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-// design logout button . when change the path in logout to get error to test the fail case we got a error check that something related to docType . then on opening notes the width of element increases on dashboard fix that . add the middleware to prevent pages from unlogged in users . fix all routes limits for free and paid users . after that add the payment gateway . 

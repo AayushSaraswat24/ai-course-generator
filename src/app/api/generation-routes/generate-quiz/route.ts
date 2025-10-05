@@ -49,7 +49,8 @@ export async function POST(request:NextRequest){
 
         const now=new Date();
         const sub=user.subscription;
-        
+        const currPlan = sub.plan;
+
         if (
           (sub.plan !== 'free') &&
           sub.expiredAt &&
@@ -61,7 +62,7 @@ export async function POST(request:NextRequest){
 
           return NextResponse.json({
             success: false,
-            message: "Your subscription has expired. Please renew to continue using pro features.",
+            message: `Your subscription has expired. Please renew to continue using ${currPlan} features.`,
           }, { status: 403 });
         }
 

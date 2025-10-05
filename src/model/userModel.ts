@@ -2,7 +2,7 @@ import mongoose,{Document,Schema} from "mongoose";
 
 export interface Subscription{
     plan:'free' | 'pro' | 'premium';
-    status:'active' | 'canceled' | 'trialing';
+    status:'active' | 'failed' | 'pending' | 'refunded';
     startedAt:Date;
     expiredAt?:Date;
 } 
@@ -26,7 +26,7 @@ const subscriptionSchema=new Schema<Subscription>({
     },
     status:{
         type:String,
-        enum:['active','canceled','trialing'],
+        enum:['active','failed','pending','refunded'],
         default:'active',
     },
     startedAt:{
@@ -35,6 +35,7 @@ const subscriptionSchema=new Schema<Subscription>({
     },
     expiredAt:{
         type:Date,
+        default:Date.now,
     },   
 },
     {

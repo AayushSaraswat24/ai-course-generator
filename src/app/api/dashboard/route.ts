@@ -68,6 +68,7 @@ export async function GET(request:NextRequest){
         name: user.userName,
         email: user.email,
         plan: currPlan,
+        expiry: user.subscription.expiredAt,
       },
       notes,
       quizzes,
