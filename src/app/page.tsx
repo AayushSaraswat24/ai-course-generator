@@ -41,7 +41,7 @@ export default function HomePage() {
             </p>
             <div className="flex flex-wrap gap-4 mt-4">
               <Link
-                href="/signin"
+                href="/plans"
                 className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg font-semibold shadow-lg transition"
               >
                 Get Started
