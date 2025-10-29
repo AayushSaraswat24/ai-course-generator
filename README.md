@@ -1,32 +1,86 @@
-# ai-course-generator
+# 🎓 Courgen — AI Course & Quiz Generator
 
-This is a full-stack web application that generates a complete course — including topic-wise notes, quizzes, and relevant YouTube video links — from a single user prompt.
+Courgen is an **AI-powered learning assistant** that generates topic-based MCQs, suggests study materials, and helps users practice interactively.  
+It’s built with **Next.js (App Router)**, **TypeScript**, and **Google Gemini SDK**, showcasing a modern, full-stack AI web app with authentication, subscriptions, and intelligent content generation.
 
-## Features
+---
 
-- Generate structured notes from any topic using AI
-- Create multiple-choice quizzes with explanations
-- Include embedded YouTube videos for each subtopic
-- Download notes and quizzes as separate PDF files
-- (Planned) User login system to save and revisit generated courses
+## 🚀 Overview
 
-## Why this project exists
+Courgen transforms any topic into a personalized, interactive learning experience.  
+Users can generate **MCQ-based quizzes**, get **YouTube video + notes recommendations**, and test their understanding instantly — all powered by the **Gemini API**.
 
-The goal is to make learning easier and faster by using AI to convert a simple prompt into a full course.  
-This also serves as a real-world project to demonstrate full-stack development skills, API integration, and user experience design.
+This project demonstrates how **Generative AI can enhance learning** through smart content generation and real-time evaluation.
 
-## Tech Stack
+---
 
-- **Frontend:** Next.js (App Router), TypeScript, Tailwind CSS
-- **Backend:** Next.js API Routes
-- **Other Tools:** Redis (rate limiting), MongoDB (user accounts), PDF generation
+## 🧩 Features
 
-## Application Routes
+✅ Generate **AI-based MCQs** on any topic  
+✅ Take **interactive quizzes** with instant feedback  
+✅ Get **YouTube video recommendations + topic notes**  
+✅ Secure **user authentication with NextAuth**  
+✅ Integrated **subscription system** for premium access  
+✅ Full-stack app built on **Next.js App Router + TypeScript**  
+✅ Powered by **Google Gemini SDK (Generative AI)**  
 
-| Path          | Purpose                                |
-|---------------|----------------------------------------|
-| `/`           | Landing page with project overview     |
-| `/generate`   | Main page to enter prompt and view output |
-| `/quiz`       | Take and review quiz (with answers)    |
-| `/login`      | (Planned) User authentication          |
->>>>>>> acbac37ea87bde852555713702c594b63d99af55
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-------------|
+| **Framework** | Next.js (App Router) |
+| **Language** | TypeScript |
+| **AI Integration** | Google Gemini SDK |
+| **Authentication** | NextAuth.js |
+| **Styling** | Tailwind CSS |
+| **State Management** | React Hooks |
+| **Payments** | Subscription-based access |
+
+---
+
+## 🧠 What This Project Demonstrates
+
+Courgen highlights strong full-stack and AI integration skills, including:
+- Designing **LLM prompts** for structured quiz generation  
+- Using **Next.js server routes** for backend logic  
+- Implementing **NextAuth authentication and protected routes**  
+- Creating a clean, responsive, **Tailwind CSS-based UI**  
+- Managing **subscriptions and premium access logic**
+
+---
+
+## 🧩 Architecture
+
+```
+Next.js (Frontend + Backend)
+   ├── /api
+   │    ├── /mcq          → Generate AI quizzes
+   │    ├── /notes        → Generate topic notes + YouTube suggestions
+   │    ├── /pdfSummary   → Export summaries as PDF
+   │    ├── /dashboard    → User quiz data & progress
+   │    └── /plans        → Subscription management
+   │
+   ├── /auth (NextAuth)   → Secure login & session management
+   └── / (UI Components)  → Interactive learning interface
+```
+
+---
+
+## 💬 About the Project
+
+Courgen is my first full-stack **Generative AI project**, built to explore how LLMs can personalize and gamify education.  
+It combines **quiz generation**, **AI recommendations**, and **authentication**, representing my ability to build **production-level AI web applications**.
+
+---
+
+## 👨‍💻 Author
+
+**Aayush Saraswat**  
+Web Developer | AI & Full-Stack Enthusiast  
+[LinkedIn](https://www.linkedin.com/in/aayushsaraswat1) 
+
+---
+
+⭐ *If you found this project interesting, feel free to star the repo or connect with me on LinkedIn!*
