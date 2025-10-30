@@ -83,7 +83,7 @@ export default function DashboardPage() {
 
             {/* Plan */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-[100px] max-w-full">
-              <span className="text-sm sm:text-lg font-medium text-gray-500 dark:text-gray-400">Plan:</span>
+              <span onClick={()=> router.push('/plans')} className="text-sm sm:text-lg font-medium text-gray-500 dark:text-gray-400">Plan:</span>
               <span
                 className={`px-3 py-1 rounded-full font-medium text-white truncate ${
                   data.user.plan === "Premium"
