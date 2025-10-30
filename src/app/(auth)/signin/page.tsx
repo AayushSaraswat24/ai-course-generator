@@ -150,7 +150,7 @@ export default function SignIn() {
                                     isLoading ? (
                                         <Loader2Icon className="animate-spin" />
                                     ) : (
-                                        "Login"
+                                        "Sign In"
                                     )
                                 }
                                 </Button>
