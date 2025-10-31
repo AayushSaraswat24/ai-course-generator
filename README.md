@@ -1,4 +1,4 @@
-# 🎓 Courgen — AI Course & Quiz Generator
+# 🎓 Courgen — AI Notes & Quiz Generator
 
 Courgen is an **AI-powered learning assistant** that generates topic-based MCQs, suggests study materials, and helps users practice interactively.  
 It’s built with **Next.js (App Router)**, **TypeScript**, and **Google Gemini SDK**, showcasing a modern, full-stack AI web app with authentication, subscriptions, and intelligent content generation.
